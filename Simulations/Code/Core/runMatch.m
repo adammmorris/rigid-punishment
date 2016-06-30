@@ -15,8 +15,8 @@
 
 function [recordQthief, recordQpun, earningsThief, earningsPun, thiefActions, punActions] = runMatch(envParams, agentParams)
 
-if nargin < 2, agentParams = [.1 .95 5 0 1 1 2]; end
-if nargin < 1, envParams = [5000 1 1 .05 2.5]; end
+if nargin < 2, agentParams = [.2 .95 10 0 0 1 2]; end
+if nargin < 1, envParams = [10000 2 2 1 5]; end
 
 %% Set up environment
 nActions = 2;
@@ -79,11 +79,7 @@ for thisRound = (agentMem + 1):(N + agentMem)
     availPun = nextAvailPun;
     
     % Thief acts
-    numerator = exp(Qthief(curState, availThief) * temp);
-    numerator(isinf(numerator)) = realmax;
-    numerator(numerator == 0) = realmin;
-    probs = numerator / sum(numerator);
-    actionThief = fastrandsample(probs, 1);
+    actionThief = fastrandsample(getSoftmax(Qthief(curState, availThief), temp), 1);
     actionPun = availPun; % punisher "acts" too, but it's just a placeholder
     
     % Transition, get rewards
@@ -120,11 +116,7 @@ for thisRound = (agentMem + 1):(N + agentMem)
     availPun = nextAvailPun;
     
     % Punisher acts
-    numerator = exp(Qpun(curState, availPun) * temp);
-    numerator(isinf(numerator)) = realmax;
-    numerator(numerator == 0) = realmin;
-    probs = numerator / sum(numerator);
-    actionPun = fastrandsample(probs, 1);
+    actionPun = fastrandsample(getSoftmax(Qpun(curState, availPun), temp), 1);
     actionThief = availThief; % thief "acts" too, but it's just a placeholder
     
     % Transition, get rewards
@@ -139,7 +131,7 @@ for thisRound = (agentMem + 1):(N + agentMem)
         earningsThief = earningsThief - p;
         
         rewardPun = pctPunCost * (-c) + punishBias * (thiefActions(thisRound) == ACTION_STEAL); % subjective payoff
-        earningsPun = earningsPun -c; % real payoff
+        earningsPun = earningsPun - c; % real payoff
     end
     
     % Update

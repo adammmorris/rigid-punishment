@@ -105,4 +105,4 @@ set(gca, 'LineWidth', 4);
 set(gca, 'FontSize', 40);
 
 %% Save
-%save('replicators.mat', '-v7.3')
+save('../Results/replicators.mat');
