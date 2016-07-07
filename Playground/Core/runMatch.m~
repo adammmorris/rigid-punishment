@@ -46,6 +46,7 @@ nStates = (nActions ^ agentMem) * 2;
 % Agents' Q value matrices
 Qthief = zeros(nStates, nActions); % thief's Q values
 Qpun = zeros(nStates, nActions); % punisher's Q values
+Qthief(1:4, 
 
 recordQthief = zeros(nStates, 1 + N * 2);
 recordQpun = zeros(nStates, 1 + N * 2);
@@ -101,9 +102,9 @@ for thisRound = (agentMem + 1):(N + agentMem)
     nextAvailPun = [ACTION_NOPUN ACTION_PUN];
     
     Qthief(curState, actionThief) = Qthief(curState, actionThief) + ...
-        lr * (rewardThief + gamma*max(Qthief(nextState, nextAvailThief)) - Qthief(curState, actionThief));
+        lr(1) * (rewardThief + gamma*max(Qthief(nextState, nextAvailThief)) - Qthief(curState, actionThief));
     Qpun(curState, actionPun) = Qpun(curState, actionPun) + ...
-        lr * (rewardPun + gamma*max(Qpun(nextState, nextAvailPun)) - Qpun(curState, actionPun));
+        lr(2) * (rewardPun + gamma*max(Qpun(nextState, nextAvailPun)) - Qpun(curState, actionPun));
     
     recordQthief(:, recordCounter) = Qthief(:, 2) - Qthief(:, 1);
     recordQpun(:, recordCounter) = Qpun(:, 2) - Qpun(:, 1);
@@ -138,9 +139,9 @@ for thisRound = (agentMem + 1):(N + agentMem)
     nextAvailPun = ACTION_NOPUN;
 
     Qthief(curState, actionThief) = Qthief(curState, actionThief) + ...
-        lr * (rewardThief + gamma*max(Qthief(nextState, nextAvailThief)) - Qthief(curState, actionThief));
+        lr(1) * (rewardThief + gamma*max(Qthief(nextState, nextAvailThief)) - Qthief(curState, actionThief));
     Qpun(curState, actionPun) = Qpun(curState, actionPun) + ...
-        lr * (rewardPun + gamma*max(Qpun(nextState, nextAvailPun)) - Qpun(curState, actionPun));
+        lr(2) * (rewardPun + gamma*max(Qpun(nextState, nextAvailPun)) - Qpun(curState, actionPun));
     
     recordQthief(:, recordCounter) = Qthief(:, 2) - Qthief(:, 1);
     recordQpun(:, recordCounter) = Qpun(:, 2) - Qpun(:, 1);

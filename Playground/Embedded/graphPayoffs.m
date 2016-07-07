@@ -1,4 +1,11 @@
-%% Graph payoffs
+%% graphPayoffs
+% Visualizes the simulated payoffs for all instantiated RL strategy pairs in the
+% steal/punish game.
+
+% Adam Morris, James MacGlashan, Michael Littman, & Fiery Cushman
+% July 2016
+
+load('cache.mat');
 figure
 
 % AS vs APT

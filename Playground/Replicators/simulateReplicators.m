@@ -11,47 +11,32 @@
 % Simulation parameters
 nAgents = 100;
 nGenerations = 10000;
+invTemp = 1 / 1000;
 
-% Which parameter are we varying (if any)?
-paramToVary = 'theta';
-paramVals = linspace(0, 1, 101);
+% Vary theta
+thetaVals = linspace(0, 1, 101);
+nThetaVals = length(thetaVals);
 nSamplesPerVal = 100;
-nParamVals = length(paramVals);
 
-randomParameters = true;
-
+% Randomly sample other parameters
 N = 10000;
-theta = 0;
-ks = 0;
-kp = 0;
-
-if randomParameters
-    mutation = .01 + rand(nParamVals, nSamplesPerVal) * .66;
-    s = .5 + rand(nParamVals, nSamplesPerVal)*19.5; % .5 to 20
-    sp = .5 + rand(nParamVals, nSamplesPerVal)*19.5; % .5 to 20
-    c = .1 + rand(nParamVals, nSamplesPerVal)*1; % .01 to 1 (% of sp)
-    p = s + rand(nParamVals, nSamplesPerVal)*30; % s to s + 30
-    invTemp = 1 / 1000;
-else
-    mutation = repmat(.1, nParamVals, nSamplesPerVal);
-    s = repmat(2, nParamVals, nSamplesPerVal);
-    sp = repmat(2, nParamVals, nSamplesPerVal);
-    c = repmat(1, nParamVals, nSamplesPerVal);
-    p = repmat(5, nParamVals, nSamplesPerVal);
-    invTemp = 1 / 100;
-end
+mutation = .01 + rand(nThetaVals, nSamplesPerVal) * .65; % .1 to .66
+s = .1 + rand(nThetaVals, nSamplesPerVal)*19.9; % .1 to 20
+sp = .1 + rand(nThetaVals, nSamplesPerVal)*19.9; % .1 to 20
+c = .1 + rand(nThetaVals, nSamplesPerVal)*19.19; % .1 to 20
+p = s + rand(nThetaVals, nSamplesPerVal)*30; % s to s + 30
 
 %% Run simulation
 
 % Initialize recording arrays
-outcomes = zeros(nParamVals, nSamplesPerVal);
+outcomes = zeros(nThetaVals, nSamplesPerVal);
 
 IND_FAMILIAR = 1;
 IND_PARADOXICAL = 2;
 IND_OTHER = 3;
 
-for thisParamVal = 1:nParamVals
-    eval(strcat(paramToVary, ' = paramVals(thisParamVal);'));
+for thisParamVal = 1:nThetaVals
+    theta = thetaVals(thisParamVal);
     
     parfor thisSample = 1:nSamplesPerVal
         payoffs = getPayoffs(N, ...
@@ -86,9 +71,9 @@ figure
 H=bar([mean(outcomes == IND_FAMILIAR, 2), mean(outcomes == IND_PARADOXICAL, 2), mean(outcomes == 3 | outcomes == 4 | outcomes == 5 | outcomes == 6, 2)], 'stacked');
 set(H(1),'facecolor',[0 180 185] / 255);
 set(H(2),'facecolor',[255 140 0] / 255);
-set(H(3),'facecolor',[255 255 255] / 255);
+set(H(3),'facecolor',[0 0 0] / 255);
 set(H, 'edgecolor', [0 0 0]);
-xlim([0 nParamVals + 1]);
+xlim([0 nThetaVals + 1]);
 ylim([0 1]);
 hl = legend('Always punish theft / Flexibly steal', 'Always steal / Flexibly punish theft', 'Other', ...
     'location', 'northoutside');
@@ -103,10 +88,10 @@ hlt = text(...
     'FontSize', 40, ...
     'FontWeight', 'bold');
 set(gca, 'XTickLabel', {'0', '', '', '', '', '', '', '', '', '', '1'}, 'YTick', [0 1], 'YTickLabel', [0 1]);
-xlabel(paramToVary);
+xlabel('theta');
 ylabel('Probability of equilibrium');
 set(gca, 'LineWidth', 4);
 set(gca, 'FontSize', 40);
 
 %% Save
-save('replicators.mat');
+%save('replicators.mat');

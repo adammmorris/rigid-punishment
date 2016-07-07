@@ -13,12 +13,12 @@ nAgents = 100;
 nGenerations = 10000;
 invTemp = 1 / 1000;
 
-% Which parameter are we varying (if any)?
+% Vary theta
 thetaVals = linspace(0, 1, 101);
 nThetaVals = length(thetaVals);
 nSamplesPerVal = 100;
 
-
+% Randomly sample other parameters
 N = 10000;
 mutation = .01 + rand(nThetaVals, nSamplesPerVal) * .65; % .1 to .66
 s = .1 + rand(nThetaVals, nSamplesPerVal)*19.9; % .1 to 20
@@ -71,7 +71,7 @@ figure
 H=bar([mean(outcomes == IND_FAMILIAR, 2), mean(outcomes == IND_PARADOXICAL, 2), mean(outcomes == 3 | outcomes == 4 | outcomes == 5 | outcomes == 6, 2)], 'stacked');
 set(H(1),'facecolor',[0 180 185] / 255);
 set(H(2),'facecolor',[255 140 0] / 255);
-set(H(3),'facecolor',[255 255 255] / 255);
+set(H(3),'facecolor',[0 0 0] / 255);
 set(H, 'edgecolor', [0 0 0]);
 xlim([0 nThetaVals + 1]);
 ylim([0 1]);
@@ -88,10 +88,10 @@ hlt = text(...
     'FontSize', 40, ...
     'FontWeight', 'bold');
 set(gca, 'XTickLabel', {'0', '', '', '', '', '', '', '', '', '', '1'}, 'YTick', [0 1], 'YTickLabel', [0 1]);
-xlabel(paramToVary);
+xlabel('theta');
 ylabel('Probability of equilibrium');
 set(gca, 'LineWidth', 4);
 set(gca, 'FontSize', 40);
 
 %% Save
-save('replicators.mat');
+%save('replicators.mat');

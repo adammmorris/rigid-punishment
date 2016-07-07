@@ -32,11 +32,11 @@ c = envParams(4); % |cost of punishing|
 p = envParams(5); % |loss when punished|
 
 %% Set up agents
-lr = agentParams(1);
+lr = [agentParams(4) agentParams(5)];
 gamma = agentParams(2);
 temp = agentParams(3);
-stealBias = agentParams(4);
-punishBias = agentParams(5);
+stealBias = 0;
+punishBias = 0;
 pctPunCost = agentParams(6);
 agentMem = agentParams(7);
 
@@ -46,6 +46,8 @@ nStates = (nActions ^ agentMem) * 2;
 % Agents' Q value matrices
 Qthief = zeros(nStates, nActions); % thief's Q values
 Qpun = zeros(nStates, nActions); % punisher's Q values
+Qthief(1:4, ACTION_STEAL) = 10;
+Qpun([6 8], ACTION_PUN) = 10;
 
 recordQthief = zeros(nStates, 1 + N * 2);
 recordQpun = zeros(nStates, 1 + N * 2);
@@ -101,9 +103,9 @@ for thisRound = (agentMem + 1):(N + agentMem)
     nextAvailPun = [ACTION_NOPUN ACTION_PUN];
     
     Qthief(curState, actionThief) = Qthief(curState, actionThief) + ...
-        lr * (rewardThief + gamma*max(Qthief(nextState, nextAvailThief)) - Qthief(curState, actionThief));
+        lr(1) * (rewardThief + gamma*max(Qthief(nextState, nextAvailThief)) - Qthief(curState, actionThief));
     Qpun(curState, actionPun) = Qpun(curState, actionPun) + ...
-        lr * (rewardPun + gamma*max(Qpun(nextState, nextAvailPun)) - Qpun(curState, actionPun));
+        lr(2) * (rewardPun + gamma*max(Qpun(nextState, nextAvailPun)) - Qpun(curState, actionPun));
     
     recordQthief(:, recordCounter) = Qthief(:, 2) - Qthief(:, 1);
     recordQpun(:, recordCounter) = Qpun(:, 2) - Qpun(:, 1);
@@ -138,9 +140,9 @@ for thisRound = (agentMem + 1):(N + agentMem)
     nextAvailPun = ACTION_NOPUN;
 
     Qthief(curState, actionThief) = Qthief(curState, actionThief) + ...
-        lr * (rewardThief + gamma*max(Qthief(nextState, nextAvailThief)) - Qthief(curState, actionThief));
+        lr(1) * (rewardThief + gamma*max(Qthief(nextState, nextAvailThief)) - Qthief(curState, actionThief));
     Qpun(curState, actionPun) = Qpun(curState, actionPun) + ...
-        lr * (rewardPun + gamma*max(Qpun(nextState, nextAvailPun)) - Qpun(curState, actionPun));
+        lr(2) * (rewardPun + gamma*max(Qpun(nextState, nextAvailPun)) - Qpun(curState, actionPun));
     
     recordQthief(:, recordCounter) = Qthief(:, 2) - Qthief(:, 1);
     recordQpun(:, recordCounter) = Qpun(:, 2) - Qpun(:, 1);

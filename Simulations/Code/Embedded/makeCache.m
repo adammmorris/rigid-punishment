@@ -26,7 +26,7 @@ punishBias = [0 2 -41]; % if punishment is costly, then we need >1 but <3. If pu
 nThiefGenes = length(stealBias);
 nPunishGenes = length(punishBias);
 
-%% Play costly!
+%% Run sims
 payoffs_costly = zeros(length(stealBias), length(punishBias), 2, nMatches);
 payoffs_notcostly = zeros(length(stealBias), length(punishBias), 2, nMatches);
 
@@ -39,38 +39,15 @@ for thiefGene = 1:nThiefGenes
         punPheno = punishBias(punishGene);
         
         parfor thisMatch = 1:nMatches
-            [~, ~, ...
-                payoffs_costly(thiefGene, punishGene, 1, thisMatch), ...
-                payoffs_costly(thiefGene, punishGene, 2, thisMatch)] = ...
+            [~, ~, payoffs_costly(thiefGene, punishGene, :, thisMatch)] = ...
                 runMatch([N s sp c p], ...
                 [lr gamma temp thiefPheno punPheno 1 agentMemory]);
             
-        end
-        
-        %payoffs_costly(thiefGene, punishGene, 1, :) = earningsThief;
-        %payoffs_costly(thiefGene, punishGene, 2, :) = earningsPun;
-    end
-end
-
-%% Do not costly
-
-for thiefGene = 1:nThiefGenes
-    for punishGene = 1:nPunishGenes
-        
-        earningsThief = zeros(nMatches, 1);
-        earningsPun = zeros(nMatches, 1);
-        
-        thiefPheno = stealBias(thiefGene);
-        punPheno = punishBias(punishGene);
-        
-        parfor thisMatch = 1:nMatches
-            [~, ~, earningsThief(thisMatch), earningsPun(thisMatch)] = ...
+            [~, ~, payoffs_notcostly(thiefGene, punishGene, :, thisMatch)] = ...
                 runMatch([N s sp c p], ...
-                [lr gamma temp thiefPheno punPheno pctCostly], false);
+                [lr gamma temp thiefPheno punPheno .2 agentMemory]);
         end
         
-        payoffs_notcostly(thiefGene, punishGene, 1, :) = earningsThief;
-        payoffs_notcostly(thiefGene, punishGene, 2, :) = earningsPun';
     end
 end
 
