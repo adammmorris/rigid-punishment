@@ -21,7 +21,7 @@ elseif nGenes == 3
     elseif genes(1) == 2 && genes(2) == 1, gene = 2; % paradoxical (AS, LPT)
     else gene = 3; % other
     end
-elseif nGenes == 9
+elseif nGenes == 7
     gene = 1;
 else
     error('nGenes must be 5 (replicator simulations) or 3 (agent-based simulations).');
