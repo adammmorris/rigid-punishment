@@ -15,10 +15,10 @@ p = 5;
 lr = .2;
 gamma = .95;
 temp = 10;
-stealBias = 0;
-punishBias = 0;
+stealBias = .2;
+punishBias = .2;
 memory = 2;
-costlyPun = true;
+costlyPun = false;
 
 if costlyPun
     pctPunCost = 1;
