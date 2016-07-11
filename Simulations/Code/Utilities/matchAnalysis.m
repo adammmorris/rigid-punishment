@@ -18,16 +18,16 @@ temp = 10;
 stealBias = 0;
 punishBias = 0;
 memory = 2;
-costlyPun = .49;
+costlyPun = false;
 
 if costlyPun
     pctPunCost = 1;
 else
-    pctPunCost = .2;
+    pctPunCost = .48;
 end
 
 %% Do it
-[rqt, rqp, earnt, earnp, actionst, actionsp] = runMatch([N s sp c p], [lr gamma temp stealBias punishBias pctPunCost memory]);
+[rqt, rqp, earn, actionst, actionsp] = runMatch([N s sp c p], [lr gamma temp stealBias punishBias pctPunCost memory]);
 num = 1+N*2;
 
 legend_thiefTurn = {'NoSteal/NoPun', 'NoSteal/Pun', 'Steal/NoPun', 'Steal/Pun'};
@@ -84,7 +84,7 @@ hold off
 
 % Earnings
 subplot(3, 2, 5);
-bar([earnt earnp]);
+bar(earn);
 title('Earnings');
 set(gca,'XTickLabels', {'Thief', 'Punisher'});
 
