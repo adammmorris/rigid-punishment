@@ -18,7 +18,7 @@ temp = 10;
 stealBias = 0;
 punishBias = 0;
 memory = 2;
-costlyPun = true;
+costlyPun = .49;
 
 if costlyPun
     pctPunCost = 1;

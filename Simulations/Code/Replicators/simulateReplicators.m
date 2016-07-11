@@ -75,7 +75,7 @@ set(H(3),'facecolor',[0 0 0] / 255);
 set(H, 'edgecolor', [0 0 0]);
 xlim([0 nThetaVals + 1]);
 ylim([0 1]);
-hl = legend('Always punish theft / Flexibly steal', 'Always steal / Flexibly punish theft', 'Other', ...
+hl = legend('Flexibly steal / Always punish theft', 'Always steal / Flexibly punish theft', 'Other', ...
     'location', 'northoutside');
 legend('boxoff');
 
