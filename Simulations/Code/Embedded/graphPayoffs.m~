@@ -11,7 +11,7 @@ load('cache.mat');
 figure
 
 if costly
-    payoffs = payoffs_costly;
+    payoffs = payoffs_c`ostly;
 else
     payoffs = payoffs_notcostly;
 end

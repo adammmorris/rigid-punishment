@@ -9,7 +9,7 @@
 
 useRandomParams = false;
 
-nMatches = 100;
+nMatches = 20;
 N = 10000;
 
 if useRandomParams
@@ -29,7 +29,7 @@ else
     
     % Vary c
     paramToVary = 'c';
-    paramVals = linspace(.1, 1, 91);
+    paramVals = linspace(.1, 1, 21);
 end
 
 nParamVals = length(paramVals);
@@ -43,7 +43,7 @@ memory = 2;
 
 %% Run sims
 result_total = zeros(nParamVals, 3);
-cutoff = .95;
+cutoff = .90;
 cutoffRange = 5001:N;
 
 EXPLOITED = 1;

@@ -21,7 +21,7 @@ temp = 10;
 agentMemory = 2;
 
 stealBias = [0 4 -3]; % if steal & get punished, +1
-punishBias = [0 2 -41]; % if punishment is costly, then we need >1 but <3. If punishment is not costly, then we need >pctCostly but < 2+pctCostly
+punishBias = [0 2 -21]; % if punishment is costly, then we need >1 but <3. If punishment is not costly, then we need >pctCostly but < 2+pctCostly
 
 nThiefGenes = length(stealBias);
 nPunishGenes = length(punishBias);
