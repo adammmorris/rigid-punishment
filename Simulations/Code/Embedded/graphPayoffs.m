@@ -7,7 +7,7 @@
 
 costly = false;
 
-load('cache.mat');
+load('cache2.mat');
 figure
 
 if costly

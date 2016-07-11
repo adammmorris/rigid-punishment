@@ -7,7 +7,7 @@
 % July 2016
 
 %% Set params for costly
-nMatches = 100;
+nMatches = 10;
 
 N = 10000;
 s = 2;
@@ -52,4 +52,4 @@ for thiefGene = 1:nThiefGenes
 end
 
 %% Save
-save('cache.mat', 'payoffs_costly', 'payoffs_notcostly');
+save('cache2.mat', 'payoffs_costly', 'payoffs_notcostly');
