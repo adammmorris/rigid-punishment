@@ -36,8 +36,8 @@ nParamVals = length(paramVals);
 lr = .2;
 gamma = .95;
 temp = 10;
-stealBias = 0;
-punishBias = 0;
+stealBias = .2;
+punishBias = .2;
 pctPunCost = 1;
 memory = 2;
 
