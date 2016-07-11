@@ -5,7 +5,7 @@
 % Adam Morris, James MacGlashan, Michael Littman, & Fiery Cushman
 % July 2016
 
-costly = true;
+costly = false;
 
 load('cache.mat');
 figure

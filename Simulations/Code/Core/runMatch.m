@@ -129,7 +129,7 @@ for thisRound = (agentMem + 1):(N + agentMem)
         rewardThief = -p;
         earnings(1) = earnings(1) - p;
         
-        rewardPun = pctPunCost * (-c) + punishBias * (thiefActions(thisRound) == ACTION_STEAL); % subjective payoff
+        rewardPun = pctPunCost * (-c) + punishBias * (punishBias < 0 | thiefActions(thisRound) == ACTION_STEAL); % subjective payoff
         earnings(2) = earnings(2) - c; % real payoff
     end
     

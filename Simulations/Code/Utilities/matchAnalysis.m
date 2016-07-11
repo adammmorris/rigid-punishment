@@ -15,15 +15,15 @@ p = 5;
 lr = .2;
 gamma = .95;
 temp = 10;
-stealBias = 0;
-punishBias = 0;
+stealBias = -3;
+punishBias = -21;
 memory = 2;
 costlyPun = false;
 
 if costlyPun
     pctPunCost = 1;
 else
-    pctPunCost = .48;
+    pctPunCost = .2;
 end
 
 %% Do it
