@@ -42,7 +42,7 @@ for thisParamVal = 1:nThetaVals
         payoffs = getPayoffs(N, ...
             s(thisParamVal, thisSample), sp(thisParamVal, thisSample), ...
             c(thisParamVal, thisSample), p(thisParamVal, thisSample), ...
-            0, 0, theta);
+            theta);
         
         [~, ~, population_full] = ...
             runMoran(payoffs, nAgents, nGenerations, invTemp, mutation(thisParamVal, thisSample));
@@ -65,7 +65,7 @@ for thisParamVal = 1:nThetaVals
     end
 end
 
-%% Draw
+%% Draw (part 1)
 figure
 
 H=bar([mean(outcomes == IND_FAMILIAR, 2), mean(outcomes == IND_PARADOXICAL, 2), mean(outcomes == 3 | outcomes == 4 | outcomes == 5 | outcomes == 6, 2)], 'stacked');
@@ -78,6 +78,8 @@ ylim([0 1]);
 hl = legend('Always punish theft / Flexibly steal', 'Always steal / Flexibly punish theft', 'Other', ...
     'location', 'northoutside');
 legend('boxoff');
+
+%% Draw (part 2)
 hlt = text(...
     'Parent', hl.DecorationContainer, ...
     'String', 'Equilibrium', ...

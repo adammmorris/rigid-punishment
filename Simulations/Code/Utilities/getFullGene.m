@@ -22,5 +22,5 @@ elseif nGenes == 3
     else gene = 3; % other
     end
 else
-    error('nGenes must be 5 (replicator simulations) or 3 (agent-based simulations).');
+    error('nGenes must be 5 (replicator simulations) or 3 (embedded agent-based simulations).');
 end

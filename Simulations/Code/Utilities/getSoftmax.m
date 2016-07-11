@@ -11,20 +11,4 @@
 
 function [prob] = getSoftmax(vec, invTemp)
 % Get exponent
-numerator = exp(vec * invTemp);
-
-% Check for infinities & zeros
-whichInf = isinf(numerator);
-whichZero = numerator == 0;
-
-if any(whichInf)
-    % If there's infinities, make them all 1 and set everything else to zero
-    numerator(whichInf) = 1;
-    numerator(~whichInf) = 0;
-elseif any(whichZero)
-    % If there's no infinities but there are zeros, change them to realmin
-    numerator(whichZero) = realmin;
-end
-
-% Normalize
-prob = numerator / sum(numerator);
+prob = exp(vec * invTemp - logsumexp(vec * invTemp));
