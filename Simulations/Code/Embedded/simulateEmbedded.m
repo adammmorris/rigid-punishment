@@ -6,7 +6,7 @@
 % July 2016
 
 %% Set parameters
-load('cache2.mat');
+load('cache3.mat');
 
 nAgents = 100;
 nGenerations = 10000;
