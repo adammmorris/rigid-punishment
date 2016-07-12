@@ -36,6 +36,10 @@ distributionPunish = zeros(nGenerations, nPunishGenes);
 
 population(1, :, IND_THIEF) = randi(nStealGenes, nAgents, 1);
 population(1, :, IND_PUN) = randi(nPunishGenes, nAgents, 1);
+%population(1, 80:100, IND_THIEF) = randi(nStealGenes, 21, 1);
+%population(1, 80:100, IND_PUN) = randi(nPunishGenes, 21, 1);
+%population(1, 1:80, IND_THIEF) = 2;
+%population(1, 1:80, IND_PUN) = 1;
 for i = 1:nAgents
     population_full(1, i) = getFullGene(squeeze(population(1, i, :)), nStealGenes);
 end
