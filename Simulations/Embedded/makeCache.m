@@ -17,7 +17,7 @@ p = 5;
 
 lr = .2;
 gamma = .95;
-temp = 10;
+temp = 100;
 agentMemory = 2;
 
 stealBias = [0 4 -3]; % if steal & get punished, +1
@@ -52,4 +52,4 @@ for thiefGene = 1:nThiefGenes
 end
 
 %% Save
-save('cache3.mat', 'payoffs_costly', 'payoffs_notcostly');
+save('cache_final.mat', 'payoffs_costly', 'payoffs_notcostly');

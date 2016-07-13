@@ -14,9 +14,9 @@ p = 5;
 
 lr = .2;
 gamma = .95;
-temp = 10;
-stealBias = -3;
-punishBias = -21;
+temp = 100;
+stealBias = 0;
+punishBias = 0;
 memory = 2;
 costlyPun = false;
 
