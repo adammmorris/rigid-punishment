@@ -1,12 +1,12 @@
 %% makeGraph
 % Visualizes the behavioral results from people playing the steal/punish
 % game.
-% Assumes "data.csv" has been loaded manually into MATLAB.
 
 % Adam Morris, James MacGlashan, Michael Littman, and Fiery Cushman
 % July 2016
 
 %% Parse data
+load('data.mat');
 
 % Convert string subject names to numeric ID
 id = zeros(length(subject), 1);
@@ -74,22 +74,22 @@ for i = 1:numRounds
     choices_p_ses(i) = std(choices_p_across(good,i)) / sqrt(sum(good));
 end
 
-p1 = errorbar([1 2.5 4.5 7],choices_t_means,choices_t_ses, '-ro');
-xlim([0 numRounds+1]);
-ylim([0 1]);
-
 p2 = errorbar([1 2.5 4.5 7],choices_p_means,choices_p_ses, '-bo');
 xlim([0 8]);
 ylim([0 1]);
 
-legend('Thief','Victim');
+p1 = errorbar([1 2.5 4.5 7],choices_t_means,choices_t_ses, '-ro');
+xlim([0 8]);
+ylim([0 1]);
+
+legend('Victim','Thief');
 legend('boxoff');
 xlabel('Round');
 ylabel('% Stealing / punishing');
 
 set(gca,'YTick',[0 .5 1]);
 set(gca,'YTickLabel',[0 50 100]);
-set(gca,'XTick',[1 7]);
+set(gca, 'XTick', [1 2.5 4.5 7], 'XTickLabel', {'1', '2-3', '4-5', '6-8'});
 set(gca, 'LineWidth', 4);
 set(gca, 'FontSize', 50);
 set(p1, 'LineWidth', 4, 'MarkerSize', 12);

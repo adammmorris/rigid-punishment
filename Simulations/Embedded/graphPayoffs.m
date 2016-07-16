@@ -1,13 +1,14 @@
 %% graphPayoffs
-% Visualizes the simulated payoffs for all instantiated RL strategy pairs in the
+% Visualizes the simulated payoffs for all RL strategy pairs in the
 % steal/punish game.
 
 % Adam Morris, James MacGlashan, Michael Littman, & Fiery Cushman
 % July 2016
 
-costly = false;
+% Visualize the payoffs when punishment is costly or not?
+costly = true;
 
-load('cache2.mat');
+load('cache.mat');
 figure
 
 if costly

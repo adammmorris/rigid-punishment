@@ -35,9 +35,11 @@ IND_FAMILIAR = 1;
 IND_PARADOXICAL = 2;
 IND_OTHER = 3;
 
+% For each value of theta..
 for thisParamVal = 1:nThetaVals
     theta = thetaVals(thisParamVal);
     
+    % Run all the samples
     parfor thisSample = 1:nSamplesPerVal
         payoffs = getPayoffs(N, ...
             s(thisParamVal, thisSample), sp(thisParamVal, thisSample), ...
@@ -47,20 +49,17 @@ for thisParamVal = 1:nThetaVals
         [~, ~, population_full] = ...
             runMoran(payoffs, nAgents, nGenerations, invTemp, mutation(thisParamVal, thisSample));
         
+        % What % of the population must be a certain strategy to count the
+        % simulation as having converged to that strategy?
         cutoff = 1 - mutation(thisParamVal, thisSample) - .1;
 
+        % Classify sample
         if mean(mean(population_full(1001:nGenerations, :) == IND_FAMILIAR)) > cutoff
             outcomes(thisParamVal, thisSample) = IND_FAMILIAR;
         elseif mean(mean(population_full(1001:nGenerations, :) == IND_PARADOXICAL)) > cutoff
             outcomes(thisParamVal, thisSample) = IND_PARADOXICAL;
-        elseif mean(mean(population_full(1001:nGenerations, :) == 3)) > cutoff
-            outcomes(thisParamVal, thisSample) = 3;
-        elseif mean(mean(population_full(1001:nGenerations, :) == 4)) > cutoff
-            outcomes(thisParamVal, thisSample) = 4;
-        elseif mean(mean(population_full(1001:nGenerations, :) == 5)) > cutoff
-            outcomes(thisParamVal, thisSample) = 5;
         else
-            outcomes(thisParamVal, thisSample) = 6;
+            outcomes(thisParamVal, thisSample) = 3;
         end
     end
 end
@@ -90,10 +89,7 @@ hlt = text(...
     'FontSize', 40, ...
     'FontWeight', 'bold');
 set(gca, 'XTickLabel', {'0', '', '', '', '', '', '', '', '', '', '1'}, 'YTick', [0 1], 'YTickLabel', [0 1]);
-xlabel('theta');
+xlabel('Risk of victim exploitation (?)');
 ylabel('Probability of equilibrium');
 set(gca, 'LineWidth', 4);
 set(gca, 'FontSize', 40);
-
-%% Save
-%save('replicators.mat');

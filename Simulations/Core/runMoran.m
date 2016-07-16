@@ -5,13 +5,16 @@
 % July 2016
 
 %% Inputs
-% payoffs: nStealGenomes x nPunishGenomes x 2 (thief payoff, punisher
-% payoff) x nMatches (# of matches to sample from)
+% payoffs: a four dimensional matrix specifying the game's payoff structure.
+%   Dimensions should be: nStealGenomes x nPunishGenomes x 2 x nSamples.
+%   First dimension is which steal genome, second is which punishment genome,
+%   third is whether you want the thief payoff (1) or punisher
+%   payoff (2), and fourth is which sample to use.
 %   If there's only one cached match (i.e. if you want static payoffs),
-%   just ignore payoff's 4th dimension
-% nAgents: number of agents in finite population
+%   just ignore payoff's 4th dimension.
+% nAgents: number of agents in population
 % nGenerations: number of generations to simulate
-% invTemp: temp of reproduction softmax function
+% invTemp: inverse temperature of reproduction softmax function
 % mutation: mutation rate
 
 %% Outputs
@@ -19,16 +22,19 @@
 %   in each generation
 % distributionPunish (nGenerations x nPunishGenes): number of each punish
 %   gene in each generation
+% population_combined (nGenerations x nAgents): for each agent, gives that
+% agent's (thief gene, punish gene) pair. (FS, AP) is indexed as "1", (AS,
+% FP) as "2", and anything else as "3".
 
-function [distributionSteal, distributionPunish, population_full] = runMoran(payoffs, nAgents, nGenerations, invTemp, mutation)
+function [distributionSteal, distributionPunish, population_combined] = runMoran(payoffs, nAgents, nGenerations, invTemp, mutation)
 
 nStealGenes = size(payoffs, 1);
 nPunishGenes = size(payoffs, 2);
 nCachedMatches = size(payoffs, 4);
 
-% Randomly initialize population
+%% Randomly initialize population
 population = zeros(nGenerations, nAgents, 2); % 1st is steal gene; 2nd is punish gene
-population_full = zeros(nGenerations, nAgents);
+population_combined = zeros(nGenerations, nAgents);
 IND_THIEF = 1; IND_PUN = 2;
 
 distributionSteal = zeros(nGenerations, nStealGenes);
@@ -36,12 +42,8 @@ distributionPunish = zeros(nGenerations, nPunishGenes);
 
 population(1, :, IND_THIEF) = randi(nStealGenes, nAgents, 1);
 population(1, :, IND_PUN) = randi(nPunishGenes, nAgents, 1);
-%population(1, 80:100, IND_THIEF) = randi(nStealGenes, 21, 1);
-%population(1, 80:100, IND_PUN) = randi(nPunishGenes, 21, 1);
-%population(1, 1:80, IND_THIEF) = 2;
-%population(1, 1:80, IND_PUN) = 1;
 for i = 1:nAgents
-    population_full(1, i) = getFullGene(squeeze(population(1, i, :)), nStealGenes);
+    population_combined(1, i) = getFullGene(squeeze(population(1, i, :)), nStealGenes);
 end
 
 randBuffer = randi(nCachedMatches, nGenerations, nStealGenes, nPunishGenes);
@@ -51,7 +53,7 @@ for thisAgent = 1:nAgents
     otherAgents(thisAgent, thisAgent) = false;
 end
 
-% Loop through generations
+%% Loop through generations
 for thisGeneration = 1:(nGenerations - 1)
     % Get the distribution of steal & punish genes
     distributionSteal(thisGeneration, :) = ...
@@ -82,12 +84,13 @@ for thisGeneration = 1:(nGenerations - 1)
     
     % Update population
     population(thisGeneration + 1, :, :) = population(thisGeneration, :, :);
-    population_full(thisGeneration + 1, :) = population_full(thisGeneration, :);
+    population_combined(thisGeneration + 1, :) = population_combined(thisGeneration, :);
     % If there's a mutation, choose randomly. Otherwise, agent reproduces.
     if rand() < mutation
         newStealGene = randi(nStealGenes);
         newPunGene = randi(nPunishGenes);
         
+        % Make sure the mutated gene is not identical to the original.
         while newStealGene == population(thisGeneration, agentRep, IND_THIEF) && ...
                 newPunGene == population(thisGeneration, agentRep, IND_PUN)
             newStealGene = randi(nStealGenes);
@@ -101,10 +104,10 @@ for thisGeneration = 1:(nGenerations - 1)
             population(thisGeneration, agentRep, :);
     end
     
-    population_full(thisGeneration + 1, agentDie) = getFullGene(squeeze(population(thisGeneration + 1, agentDie, :)), nStealGenes);
+    population_combined(thisGeneration + 1, agentDie) = getFullGene(squeeze(population(thisGeneration + 1, agentDie, :)), nStealGenes);
 end
 
-% Get ending distribution
+%% Get ending distribution
 distributionSteal(nGenerations, :) = ...
     histc(population(nGenerations, :, IND_THIEF), 1:nStealGenes);
 distributionPunish(nGenerations, :) = ...

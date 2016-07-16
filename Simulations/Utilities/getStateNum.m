@@ -3,6 +3,9 @@
 % This assumes that agents represent being in the other person's turn -
 % so there's only 1 state number (at any given point) for both roles.
 
+% Adam Morris, James MacGlashan, Michael Littman, & Fiery Cushman
+% July 2016
+
 %% Inputs
 % thiefActions: all the thief's actions up until now, in temporal order
 %   (i.e. if the thief stole on turn 1 and didn't steal on turn 2,
@@ -15,10 +18,11 @@
 
 %% Outputs
 % state: consistent state index
+
 function [state] = getStateNum(thiefActions, punActions, memory)
 
 %% Setup
-nActions = 2;
+nActions = 2; % # of actions available in each state
 
 %% Calculate indices
 
