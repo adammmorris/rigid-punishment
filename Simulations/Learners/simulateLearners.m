@@ -23,14 +23,14 @@ if useRandomParams
     paramToVary = '';
     paramVals = 1;
 else
-    s = 2 * ones(nMatches, 1);
-    sp = 2 * ones(nMatches, 1);
+    s = 1 * ones(nMatches, 1);
+    sp = 1 * ones(nMatches, 1);
     c = 1 * ones(nMatches, 1);
-    p = 5 * ones(nMatches, 1);
+    p = 3 * ones(nMatches, 1);
     
     % Vary c
     paramToVary = 'c';
-    paramVals = linspace(.1, 1, 91);
+    paramVals = linspace(.2, 1, 81);
 end
 
 nParamVals = length(paramVals);

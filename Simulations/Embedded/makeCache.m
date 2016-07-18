@@ -10,10 +10,10 @@
 nMatches = 100;
 
 N = 10000; % # of rounds in game
-s = 2; % benefit of stealing
-sp = 2; % cost of being stolen from
+s = 1; % benefit of stealing
+sp = 1; % cost of being stolen from
 c = 1; % cost of punishing
-p = 5; % cost of being punished
+p = 3; % cost of being punished
 
 lr = .2; % learning rate
 gamma = .95; % discount rate
@@ -22,8 +22,8 @@ agentMemory = 2; % memory in agent state space
 
 % Hedonic biases for stealing/punishing, in this order:
 % [FS/FP AS/APT NS/NP]
-stealBias = [0 4 -3];
-punishBias = [0 2 -21];
+stealBias = [0 3 -2];
+punishBias = [0 2 -11];
 
 nThiefGenes = length(stealBias);
 nPunishGenes = length(punishBias);
@@ -58,4 +58,4 @@ for thiefGene = 1:nThiefGenes
 end
 
 %% Save
-save('cache_final.mat', 'payoffs_costly', 'payoffs_notcostly');
+save('cache.mat', 'payoffs_costly', 'payoffs_notcostly');

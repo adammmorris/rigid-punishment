@@ -6,12 +6,12 @@
 % July 2016
 
 %% Load the cached matches
-load('cache.mat');
+load('cache_newparams.mat');
 
 %% Set parameters
 nAgents = 100; % # of agents in population
 nGenerations = 10000; % # of generations to simulate
-invTemp = 1 / 100; % inverse temperature of softmax selection function
+invTemp = 1 / 1000; % inverse temperature of softmax selection function
 mutation = .1; % mutation rate
 
 %% Run simulation

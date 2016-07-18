@@ -7,10 +7,10 @@
 
 %% Parameters
 N = 10000;
-s = 2;
-sp = 2;
+s = 1;
+sp = 1;
 c = 1;
-p = 5;
+p = 3;
 
 lr = .2;
 gamma = .95;
@@ -18,7 +18,7 @@ temp = 100;
 stealBias = 0;
 punishBias = 0;
 memory = 2;
-costlyPun = false;
+costlyPun = true;
 
 if costlyPun
     pctPunCost = 1;
