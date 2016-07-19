@@ -106,7 +106,7 @@ if ~useRandomParams
     hl = legend('RL victim exploited', 'RL thief exploited', 'Other', ...
         'location', 'northoutside');
     legend('boxoff');
-    %set(gca, 'XTick', [0 nParamVals + 1], 'XTickLabel', [.1 1], 'YTick', [0 1], 'YTickLabel', [0 1]);
+    set(gca, 'XTick', [0 nParamVals + 1], 'XTickLabel', [.2 2], 'YTick', [0 1], 'YTickLabel', [0 1]);
     xlabel('Cost of punishing');
     ylabel('Probability of outcome');
     set(gca, 'LineWidth', 4);
