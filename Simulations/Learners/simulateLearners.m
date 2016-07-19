@@ -30,7 +30,7 @@ else
     
     % Vary c
     paramToVary = 'c';
-    paramVals = linspace(.2, 1, 81);
+    paramVals = linspace(.1, 2, 101);
 end
 
 nParamVals = length(paramVals);
@@ -106,7 +106,7 @@ if ~useRandomParams
     hl = legend('RL victim exploited', 'RL thief exploited', 'Other', ...
         'location', 'northoutside');
     legend('boxoff');
-    set(gca, 'XTick', [0 nParamVals + 1], 'XTickLabel', [.1 1], 'YTick', [0 1], 'YTickLabel', [0 1]);
+    %set(gca, 'XTick', [0 nParamVals + 1], 'XTickLabel', [.1 1], 'YTick', [0 1], 'YTickLabel', [0 1]);
     xlabel('Cost of punishing');
     ylabel('Probability of outcome');
     set(gca, 'LineWidth', 4);
