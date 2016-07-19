@@ -18,8 +18,8 @@ BEHAVIORAL
 
 The "Behavioral" folder contains all the data from the behavioral experiment, and the code to analyze it.
 
-"data.csv" is the original data, with the following columns: "role" (0 is thief, 1 is victim), "opType" (0 is persistent, 1 is flexible), "choice" (0 is do nothing, 1 is steal), "payoffSubj1" / "payoffSubj2" are the payoffs to the subject after the thief's/victim's turn, "payoffOpp1" / "payoffOpp2" are the payoffs to the opponent, "rt" is the reaction time, "score" is the  subject's running total, "globalRound" is the total # of rounds that the subject has done, and "matchRound" is the total # of rounds played in this match.
+"data.csv" is the original data, with the following columns: "roleVictim" (1 if participant played as victim that match, 0 if thief), "oppPersistent" (1 if opponent was persistent, 0 if not), "choiceAction" (1 if the person chose to act [i.e. steal/punish], 0 if they chose to do nothing), "rt" is the reaction time, "score" is the  subject's running total, "globalRound" is the total # of rounds that the subject has done, and "matchRound" is the total # of rounds played in this match.
 
-"data.mat" is the data, imported into MATLAB. "makeGraph.m" creates the graph reported in the paper. "analysis.R" runs the statistical analysis.
+"data.mat" is the data, imported into MATLAB. "makeGraph.m" creates the graph reported in the paper. "analysis.R" runs the statistical analysis. "analysis.RData" is the result of "analysis.R".
 
 "game.fla" is the code used to run the actual game, and "game.swf" is the game itself.

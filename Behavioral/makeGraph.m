@@ -23,41 +23,30 @@ end
 
 numSubjects = curID;
 
-% Set constants
-
-% Roles
-ROLE_THIEF = 0;
-ROLE_VICTIM = 1;
-
-% Opponents
-OPP_INFLEXIBLE = 0;
-OPP_FLEXIBLE = 1;
-
-% Actions
-CHOICE_NOTHING = 0;
-CHOICE_ACTION = 1;
-
 %% Make graph
 
-numRounds = 4;
+numRounds = 10;
 
 choices_t_across = zeros(numSubjects,numRounds);
 choices_p_across = zeros(numSubjects,numRounds);
 
 for thisSubj = 1:numSubjects
-    choices_t_across(thisSubj,1) = mean(choice(id==thisSubj & role == ROLE_THIEF & opType == OPP_INFLEXIBLE & matchRound == 1));
-    choices_p_across(thisSubj,1) = mean(choice(id==thisSubj & role == ROLE_VICTIM & opType == OPP_INFLEXIBLE & matchRound == 1));
-    
-    choices_t_across(thisSubj,2) = mean(choice(id==thisSubj & role == ROLE_THIEF & opType == OPP_INFLEXIBLE & (matchRound == 2 | matchRound == 3)));
-    choices_p_across(thisSubj,2) = mean(choice(id==thisSubj & role == ROLE_VICTIM & opType == OPP_INFLEXIBLE & (matchRound == 2 | matchRound == 3)));
-    
-    choices_t_across(thisSubj,3) = mean(choice(id==thisSubj & role == ROLE_THIEF & opType == OPP_INFLEXIBLE & (matchRound == 4 | matchRound == 5)));
-    choices_p_across(thisSubj,3) = mean(choice(id==thisSubj & role == ROLE_VICTIM & opType == OPP_INFLEXIBLE & (matchRound == 4 | matchRound == 5)));
-    
-    choices_t_across(thisSubj,4) = mean(choice(id==thisSubj & role == ROLE_THIEF & opType == OPP_INFLEXIBLE & (matchRound == 6 | matchRound == 7 | matchRound == 8)));
-    choices_p_across(thisSubj,4) = mean(choice(id==thisSubj & role == ROLE_VICTIM & opType == OPP_INFLEXIBLE & (matchRound == 6 | matchRound == 7 | matchRound == 8)));
+    for thisRound = 1:numRounds
+%     choices_t_across(thisSubj,1) = mean(choice(id==thisSubj & role == ROLE_THIEF & opType == OPP_FLEXIBLE & matchRound == 1));
+%     choices_p_across(thisSubj,1) = mean(choice(id==thisSubj & role == ROLE_VICTIM & opType == OPP_FLEXIBLE & matchRound == 1));
+%     
+%     choices_t_across(thisSubj,2) = mean(choice(id==thisSubj & role == ROLE_THIEF & opType == OPP_FLEXIBLE & (matchRound == 2 | matchRound == 3)));
+%     choices_p_across(thisSubj,2) = mean(choice(id==thisSubj & role == ROLE_VICTIM & opType == OPP_FLEXIBLE & (matchRound == 2 | matchRound == 3)));
+%     
+%     choices_t_across(thisSubj,3) = mean(choice(id==thisSubj & role == ROLE_THIEF & opType == OPP_FLEXIBLE & (matchRound == 4 | matchRound == 5)));
+%     choices_p_across(thisSubj,3) = mean(choice(id==thisSubj & role == ROLE_VICTIM & opType == OPP_FLEXIBLE & (matchRound == 4 | matchRound == 5)));
+%     
+%     choices_t_across(thisSubj,4) = mean(choice(id==thisSubj & role == ROLE_THIEF & opType == OPP_FLEXIBLE & (matchRound == 6 | matchRound == 7 | matchRound == 8)));
+%     choices_p_across(thisSubj,4) = mean(choice(id==thisSubj & role == ROLE_VICTIM & opType == OPP_FLEXIBLE & (matchRound == 6 | matchRound == 7 | matchRound == 8)));
+        choices_t_across(thisSubj, thisRound) = mean(choiceAction(id == thisSubj & roleVictim == 0 & oppInflex == 1 & matchRound == thisRound));
+        choices_p_across(thisSubj, thisRound) = mean(choiceAction(id == thisSubj & roleVictim == 1 & oppInflex == 1 & matchRound == thisRound));
+    end
 end
-
 fh = figure; hold on; col = hsv(10);
 
 choices_t_means = zeros(1,numRounds);
@@ -74,12 +63,12 @@ for i = 1:numRounds
     choices_p_ses(i) = std(choices_p_across(good,i)) / sqrt(sum(good));
 end
 
-p2 = errorbar([1 2.5 4.5 7],choices_p_means,choices_p_ses, '-bo');
-xlim([0 8]);
+p2 = errorbar(1:10,choices_p_means,choices_p_ses, '-bo');
+xlim([0 11]);
 ylim([0 1]);
 
-p1 = errorbar([1 2.5 4.5 7],choices_t_means,choices_t_ses, '-ro');
-xlim([0 8]);
+p1 = errorbar(1:10,choices_t_means,choices_t_ses, '-ro');
+xlim([0 11]);
 ylim([0 1]);
 
 legend('Victim','Thief');
@@ -89,7 +78,7 @@ ylabel('% Stealing / punishing');
 
 set(gca,'YTick',[0 .5 1]);
 set(gca,'YTickLabel',[0 50 100]);
-set(gca, 'XTick', [1 2.5 4.5 7], 'XTickLabel', {'1', '2-3', '4-5', '6-8'});
+set(gca,'XTick',[1 10]);
 set(gca, 'LineWidth', 4);
 set(gca, 'FontSize', 50);
 set(p1, 'LineWidth', 4, 'MarkerSize', 12);
