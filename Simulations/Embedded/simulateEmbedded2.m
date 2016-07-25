@@ -14,11 +14,12 @@ load('cache_full2.mat');
 nAgents = 100; % # of agents in population
 nGenerations = 10000; % # of generations to simulate
 invTemp = 1 / 1000; % inverse temperature of softmax selection function
-mutation = .15; % mutation rate
+mutation = .2; % mutation rate
 
 % Vary pctPunCost
-paramVals = linspace(.1, 1, 10);
-nParamVals = length(paramVals);
+%paramVals = linspace(.1, 1, 10);
+%paramVals = .1;
+%nParamVals = length(paramVals);
 nSamplesPerVal = 10;
 
 %% Run simulation
@@ -37,7 +38,7 @@ for thisParamVal = 1:nParamVals
     
     % Run all the samples
     parfor thisSample = 1:nSamplesPerVal
-        [~, ~, population_full] = ...
+        [distSteal, distPun, population_full] = ...
             runMoran(payoffs_cur, nAgents, nGenerations, invTemp, mutation);
         
         % What % of the population must be a certain strategy to count the
@@ -49,8 +50,11 @@ for thisParamVal = 1:nParamVals
             outcomes(thisParamVal, thisSample) = IND_FAMILIAR;
         elseif mean(mean(population_full(1001:nGenerations, :) == IND_PARADOXICAL)) > cutoff
             outcomes(thisParamVal, thisSample) = IND_PARADOXICAL;
-        else
+        elseif mean(mean(population_full(1001:nGenerations, :) == 3)) > cutoff
+            
             outcomes(thisParamVal, thisSample) = 3;
+        else
+            outcomes(thisParamVal, thisSample) = 4;
         end
     end
 end
@@ -58,7 +62,8 @@ end
 %% Draw (part 1)
 figure
 
-H=bar([mean(outcomes == IND_FAMILIAR, 2), mean(outcomes == IND_PARADOXICAL, 2), mean(outcomes == 3 | outcomes == 4 | outcomes == 5 | outcomes == 6, 2)], 'stacked');
+%H=bar([mean(outcomes == IND_FAMILIAR, 2), mean(outcomes == IND_PARADOXICAL, 2), mean(outcomes == 3 | outcomes == 4 | outcomes == 5 | outcomes == 6, 2)], 'stacked');
+H=bar([mean(outcomes == IND_FAMILIAR, 2), mean(outcomes == IND_PARADOXICAL, 2), mean(outcomes == 3, 2), mean(outcomes == 4 | outcomes == 5 | outcomes == 6, 2)], 'stacked');
 set(H(1),'facecolor',[0 180 185] / 255);
 set(H(2),'facecolor',[255 140 0] / 255);
 set(H(3),'facecolor',[0 0 0] / 255);

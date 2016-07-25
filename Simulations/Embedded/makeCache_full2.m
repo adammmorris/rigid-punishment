@@ -7,12 +7,12 @@
 % July 2016
 
 %% Set params
-nMatches = 20;
+nMatches = 10;
 
 N = 10000; % # of rounds in game
 s = 1; % benefit of stealing
 sp = 1; % cost of being stolen from
-c = 2; % cost of punishing
+c = 1; % cost of punishing
 p = 3; % cost of being punished
 
 lr = .2; % learning rate
@@ -28,7 +28,7 @@ punishBias = [0 2 -11];
 nThiefGenes = length(stealBias);
 nPunishGenes = length(punishBias);
 
-paramVals = linspace(.1, 1, 10);
+paramVals = linspace(.1, 2, 10);
 nParamVals = length(paramVals);
 
 %% Run sims
@@ -60,4 +60,4 @@ for thiefGene = 1:nThiefGenes
 end
 
 %% Save
-save('cache_full.mat', 'payoffs', 'paramVals', 'nParamVals');
+save('cache_full2.mat', 'payoffs', 'paramVals', 'nParamVals');
