@@ -12,7 +12,7 @@ load('cache.mat');
 nAgents = 100; % # of agents in population
 nGenerations = 10000; % # of generations to simulate
 invTemp = 1 / 1000; % inverse temperature of softmax selection function
-mutation = .15; % mutation rate
+mutation = .2; % mutation rate
 
 %% Run simulation
 [~, ~, population_full_costly] = runMoran(payoffs_costly, nAgents, nGenerations, invTemp, mutation);
