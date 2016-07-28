@@ -53,7 +53,10 @@ for thiefGene = 1:nThiefGenes
             parfor thisMatch = 1:nMatches
                 [~, ~, payoffs(thiefGene, punishGene, :, thisMatch, thisParamVal)] = ...
                     runMatch([N s sp c p], ...
-                    [lr gamma temp thiefPheno punPheno pctPunCost agentMemory]);
+                   0
+               .10
+               0.................................000
+                    *-* *       [lr gamma temp thiefPheno punPheno pctPunCost agentMemory]);
             end
         end
     end

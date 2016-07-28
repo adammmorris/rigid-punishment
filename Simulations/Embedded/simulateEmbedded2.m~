@@ -17,7 +17,7 @@ invTemp = 1 / 1000; % inverse temperature of softmax selection function
 mutation = .2; % mutation rate
 
 % Vary pctPunCost
-nSamplesPerVal = 100;
+nSamplesPerVal = 25;
 
 %% Run simulation
 
@@ -29,7 +29,7 @@ IND_PARADOXICAL = 2;
 IND_NOCONV = 0;
 
 % For each value of theta..
-for thisParamVal = 1:nParamVals
+for thisParamVal = 20:40
     pctPunCost = paramVals(thisParamVal);
     payoffs_cur = payoffs(:, :, :, :, thisParamVal);
     
@@ -56,24 +56,22 @@ end
 figure
 
 %H=bar([mean(outcomes == IND_FAMILIAR, 2), mean(outcomes == IND_PARADOXICAL, 2), mean(outcomes == 3 | outcomes == 4 | outcomes == 5 | outcomes == 6, 2)], 'stacked');
-H=bar([mean(outcomes == IND_FAMILIAR, 2), mean(outcomes == IND_PARADOXICAL, 2), ...
-    mean(outcomes ~= IND_FAMILIAR & outcomes ~= IND_PARADOXICAL & outcomes ~= IND_NOCONV, 2), ...
-    mean(outcomes == IND_NOCONV, 2)], 'stacked');
+H=bar([mean(outcomes == IND_FAMILIAR, 2), mean(outcomes == IND_PARADOXICAL, 2), mean(outcomes == IND_NOCONV, 2), mean(all(outcomes ~= [IND_FAMILIAR IND_PARADOXICAL IND_NOCONV]), 2)], 'stacked');
 set(H(1),'facecolor',[0 180 185] / 255);
 set(H(2),'facecolor',[255 140 0] / 255);
-set(H(3),'facecolor',[0 0 0] / 255);
-set(H(4),'facecolor',[120 120 120] / 255);
+set(H(3),'facecolor',[120 120 120] / 255);
+set(H(4),'facecolor',[0 0 0] / 255);
 set(H, 'edgecolor', [0 0 0]);
 xlim([0 nParamVals + 1]);
 ylim([0 1]);
-hl = legend('Steal bias: 0, Punish bias: +', 'Steal bias: +, Punish bias: 0', 'Other equilibrium', 'No equilibrium', ...
+hl = legend('Steal bias: 0, Punish bias: +', 'Steal bias: +, Punish bias: 0', 'No equilibrium', ...
     'location', 'northoutside');
 legend('boxoff');
 
 %% Draw (part 2)
 hlt = text(...
     'Parent', hl.DecorationContainer, ...
-    'String', 'Equilibrium Genotype', ...
+    'String', 'Genotype', ...
     'HorizontalAlignment', 'center', ...
     'VerticalAlignment', 'bottom', ...
     'Position', [0.5, 1.05, 0], ...

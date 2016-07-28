@@ -31,9 +31,9 @@ p = s + rand(nThetaVals, nSamplesPerVal)*30; % s to s + 30
 % Initialize recording arrays
 outcomes = zeros(nThetaVals, nSamplesPerVal);
 
-IND_FAMILIAR = 1;
-IND_PARADOXICAL = 2;
-IND_OTHER = 3;
+IND_FAMILIAR = 10;
+IND_PARADOXICAL = 21;
+IND_NOCONV = 0;
 
 % For each value of theta..
 for thisParamVal = 1:nThetaVals
@@ -54,12 +54,11 @@ for thisParamVal = 1:nThetaVals
         cutoff = 1 - mutation(thisParamVal, thisSample) - .1;
 
         % Classify sample
-        if mean(mean(population_full(1001:nGenerations, :) == IND_FAMILIAR)) > cutoff
-            outcomes(thisParamVal, thisSample) = IND_FAMILIAR;
-        elseif mean(mean(population_full(1001:nGenerations, :) == IND_PARADOXICAL)) > cutoff
-            outcomes(thisParamVal, thisSample) = IND_PARADOXICAL;
-        else
-            outcomes(thisParamVal, thisSample) = 3;
+        for eq = 1:25
+            if mean(mean(population_full(1001:nGenerations, :) == eq)) > cutoff
+                outcomes(thisParamVal, thisSample) = eq;
+                break;
+            end
         end
     end
 end
@@ -67,14 +66,17 @@ end
 %% Draw (part 1)
 figure
 
-H=bar([mean(outcomes == IND_FAMILIAR, 2), mean(outcomes == IND_PARADOXICAL, 2), mean(outcomes == 3 | outcomes == 4 | outcomes == 5 | outcomes == 6, 2)], 'stacked');
+H=bar([mean(outcomes == IND_FAMILIAR, 2), mean(outcomes == IND_PARADOXICAL, 2), ...
+    mean(outcomes ~= IND_FAMILIAR & outcomes ~= IND_PARADOXICAL & outcomes ~= IND_NOCONV, 2), ...
+    mean(outcomes == IND_NOCONV, 2)], 'stacked');
 set(H(1),'facecolor',[0 180 185] / 255);
 set(H(2),'facecolor',[255 140 0] / 255);
 set(H(3),'facecolor',[0 0 0] / 255);
+set(H(4),'facecolor',[120 120 120] / 255);
 set(H, 'edgecolor', [0 0 0]);
 xlim([0 nThetaVals + 1]);
 ylim([0 1]);
-hl = legend('Flexibly steal / Always punish theft', 'Always steal / Flexibly punish theft', 'Other', ...
+hl = legend('Flexibly steal / Always punish theft', 'Always steal / Flexibly punish theft', 'Other', 'None', ...
     'location', 'northoutside');
 legend('boxoff');
 
