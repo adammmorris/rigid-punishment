@@ -2,6 +2,7 @@
 % Simulates the stochastic evolution of a finite population of agents
 % playing the steal/punish game, using the larger 5x5 strategy space (for
 % each role, all 4 reactive strategies plus 1 learning strategy).
+% Systematically varies theta while randomly sampling other parameters.
 
 % Adam Morris, James MacGlashan, Michael Littman, & Fiery Cushman
 % July 2016

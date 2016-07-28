@@ -11,18 +11,4 @@
 % July 2016
 
 function [gene] = getFullGene(genes, nGenes)
-% if nGenes == 5
-%     if genes(1) == 5 && genes(2) == 2, gene = 1; % familiar (LS, APT)
-%     elseif genes(1) == 1 && genes(2) == 5, gene = 2; % paradoxical (AS, LPT)
-%     else gene = 3; % other
-%     end
-% elseif nGenes == 3
-%     if genes(1) == 1 && genes(2) == 2, gene = 1; % familiar (LS, APT)
-%     elseif genes(1) == 2 && genes(2) == 1, gene = 2; % paradoxical (AS, LPT)
-%     elseif genes(1) == 2 && genes(2) == 3, gene = 3;
-%     else gene = 4;
-%     end
-% else
-%     error('nGenes must be 5 (replicator simulations) or 3 (embedded agent-based simulations).');
-% end
 gene = fastsub2ind([nGenes nGenes], genes(1), genes(2));

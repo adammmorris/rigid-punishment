@@ -1,6 +1,10 @@
-%% simulateEmbedded
-% Runs evolutionary simulation of the steal/punish game with embedded RL agents, using
-% the cached outcomes from makeCache.m.
+%% simulateReplicators_single
+% Simulates the stochastic evolution of a finite population of agents
+% playing the steal/punish game, using the larger 5x5 strategy space (for
+% each role, all 4 reactive strategies plus 1 learning strategy).
+% Simulates a single population, rather than systematically varying theta.
+% This is not actually used to produce any of the data or figures in the
+% paper, but it's a useful testing tool.
 
 % Adam Morris, James MacGlashan, Michael Littman, & Fiery Cushman
 % July 2016
@@ -15,7 +19,7 @@ thetaVals = linspace(0, 1, 101);
 nThetaVals = length(thetaVals);
 nSamplesPerVal = 100;
 
-% Randomly sample other parameters
+% Set parameters
 N = 10000;
 mutation = .1;
 s = 1;

@@ -10,7 +10,7 @@ The "Simulations" folder contains all the simulation code, and all the reported 
 
 "Learners" is where we simulate two (unbiased) RL agents playing each other in the steal/punish game. "simulateLearners.m" runs the simulations (either with randomly sampled parameters or systematically varying the cost of punishment), and "learners_randparams.mat" and "learners_varyingcost.mat" store the results.
 
-"Embedded" is where we embed the RL agents in an evolutionary system and let them evolve hedonic biases for theft/punishment. "makeCache.m" runs the agent vs agent simulations and caches the payoff results. "simulateEmbedded.m" runs the simulations, and the results are stored in "cache.mat". ("graphPayoffs.m" visualizes the cached payoffs, and “createEmbeddedFigure” visualizes the simulation output.)
+"Embedded" is where we embed the RL agents in an evolutionary system and let them evolve hedonic biases for theft/punishment. "makeCache.m" runs the agent vs agent simulations, caches the payoff results, and stores the cache in "cache.mat". "simulateEmbedded.m" runs the simulations, and the results are stored in "embedded.mat".
 
 "Utilities" contains a bunch of background scripts used throughout the simulation code. See the scripts themselves for explanations.
 

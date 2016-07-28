@@ -77,7 +77,7 @@ payoffs(3, 4, 2) = -N * sp;
 
 % Steal after non-punishment vs learn to punish
 payoffs(3, 5, 1) = N * (-p * (c <= sp) + s * (c > sp));
-payoffs(3, 5, 2) = N * (c * (c <= sp) + sp * (c > sp));
+payoffs(3, 5, 2) = -N * (c * (c <= sp) + sp * (c > sp));
 
 % Never steal vs always punish
 payoffs(4, 1, 1) = -N * p;

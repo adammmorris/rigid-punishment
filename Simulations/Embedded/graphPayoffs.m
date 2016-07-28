@@ -1,21 +1,21 @@
 %% graphPayoffs
 % Visualizes the simulated payoffs for all RL strategy pairs in the
-% steal/punish game.
+% steal/punish game, for a given subjective cost of punishing.
+% This is not actually used to produce any of the data or figures in the
+% paper, but it's a useful testing tool.
+% Red is thief payoff, blue is victim payoff.
 
 % Adam Morris, James MacGlashan, Michael Littman, & Fiery Cushman
 % July 2016
 
-% Visualize the payoffs when punishment is costly or not?
-costly = true;
+% What % of the original cost do you want to use?
+pctPunCost = 1;
 
 load('cache.mat');
 figure
 
-if costly
-    payoffs = payoffs_costly;
-else
-    payoffs = payoffs_notcostly;
-end
+[~, cost] = min(abs(paramVals - pctPunCost));
+payoffs = payoffs(:, :, :, :, cost);
 
 % AS vs APT
 g1 = subplot(3,3,1);
