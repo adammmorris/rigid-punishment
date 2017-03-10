@@ -15,16 +15,15 @@ nGenerations = 10000;
 invTemp = 1 / 1000;
 
 % Vary theta
-thetaVals = linspace(0, 1, 51);
+thetaVals = linspace(0, 1, 101);
 nThetaVals = length(thetaVals);
-nSamplesPerVal = 10;
+nSamplesPerVal = 100;
 
 % Randomly sample other parameters
 N = 10000;
-%mutation = .01 + rand(nThetaVals, nSamplesPerVal) * .65; % .1 to .66
 mutation = .2;
 s = .1 + rand(nThetaVals, nSamplesPerVal)*19.9; % .1 to 20
-sp = .1 + rand(nThetaVals, nSamplesPerVal)*19.9; % .1 to 20
+sp = s; % for simplicity, fix the cost of being stolen (sp) from at s
 c = .1 + rand(nThetaVals, nSamplesPerVal)*19.19; % .1 to 20
 p = s + rand(nThetaVals, nSamplesPerVal)*30; % s to s + 30
 
@@ -80,7 +79,6 @@ xlim([0 nThetaVals + 1]);
 ylim([0 1]);
 hl = legend('Persistent punishment', 'Persistent theft', 'Other', 'No convergence', ...
     'location', 'southeast');
-%legend('boxoff');
 set(gca, 'XTick', [0 nThetaVals + 1], 'XTickLabel', [0 1], 'YTick', [0 1], 'YTickLabel', [0 1]);
 xlabel('Risk of victim exploitation (?)');
 ylabel(sprintf('Probability of\nequilibrium'));
@@ -89,17 +87,3 @@ set(gca, 'FontSize', 60);
 set(gcf,'PaperOrientation','landscape');
 set(gcf,'PaperUnits','normalized');
 set(gcf,'PaperPosition', [0 0 1 1]);
-
-%%
-print(gcf, '-dpdf', 'test1.pdf')
-
-%% Draw (part 2)
-hlt = text(...
-    'Parent', hl.DecorationContainer, ...
-    'String', 'Population converges to:', ...
-    'HorizontalAlignment', 'center', ...
-    'VerticalAlignment', 'bottom', ...
-    'Position', [0.5, 1, 0], ...
-    'Units', 'normalized', ...
-    'FontSize', 48, ...
-    'FontWeight', 'bold');

@@ -8,14 +8,18 @@
 %% Parameters
 % If useRandomParams is true, all params are randomly sampled.
 % If it's false, they are fixed, and c is varied systematically
-useRandomParams = false;
+useRandomParams = true;
 
-nMatches = 100; % # of matches to simulate
+ % # of matches to simulate
+if useRandomParams, nMatches = 10000;
+else nMatches = 100;
+end
+
 N = 10000; % # of rounds in each match
 
 if useRandomParams
     s = .1 + rand(nMatches,1)*19.19; % .1 to 20
-    sp = .1 + rand(nMatches,1)*19.9; % .1 to 20
+    sp = s; % for simplicity, fix the cost of being stolen from (sp) at s
     c = .1 + rand(nMatches,1)*19.19; % .1 to 20
     p = s + rand(nMatches,1)*30; % s to s + 30
     
@@ -24,7 +28,7 @@ if useRandomParams
     paramVals = 1;
 else
     s = 1 * ones(nMatches, 1);
-    sp = 1 * ones(nMatches, 1);
+    sp = s;
     c = 1 * ones(nMatches, 1);
     p = 3 * ones(nMatches, 1);
     
@@ -110,17 +114,4 @@ if ~useRandomParams
     ylabel(sprintf('Probability of\nlearning outcome'));
     set(gca, 'LineWidth', 4);
     set(gca, 'FontSize', 60);
-end
-
-%% Draw (part 2)
-if ~useRandomParams
-    hlt = text(...
-        'Parent', hl.DecorationContainer, ...
-        'String', 'Learning outcome', ...
-        'HorizontalAlignment', 'center', ...
-        'VerticalAlignment', 'bottom', ...
-        'Position', [0.5, 1.05, 0], ...
-        'Units', 'normalized', ...
-        'FontSize', 48, ...
-        'FontWeight', 'bold');
 end
