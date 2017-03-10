@@ -80,6 +80,6 @@ set(gca,'YTick',[0 .5 1]);
 set(gca,'YTickLabel',[0 50 100]);
 set(gca,'XTick',[1 10]);
 set(gca, 'LineWidth', 4);
-set(gca, 'FontSize', 50);
+set(gca, 'FontSize', 60);
 set(p1, 'LineWidth', 4, 'MarkerSize', 12);
 set(p2, 'LineWidth', 4, 'MarkerSize', 12);

@@ -22,11 +22,13 @@ nSamplesPerVal = 10;
 % Randomly sample other parameters
 N = 10000;
 %mutation = .01 + rand(nThetaVals, nSamplesPerVal) * .65; % .1 to .66
-mutation = .2;
-s = .1 + rand(nThetaVals, nSamplesPerVal)*19.9; % .1 to 20
-sp = .1 + rand(nThetaVals, nSamplesPerVal)*19.9; % .1 to 20
-c = .1 + rand(nThetaVals, nSamplesPerVal)*19.19; % .1 to 20
-p = s + rand(nThetaVals, nSamplesPerVal)*30; % s to s + 30
+mutation = repmat(.2, nThetaVals, nSamplesPerVal);
+x = 0 + rand(nThetaVals, nSamplesPerVal) * 6;
+y = 0 + rand(nThetaVals, nSamplesPerVal) * 2;
+s = 0 + rand(nThetaVals, nSamplesPerVal) * 2;
+sp = 0 + rand(nThetaVals, nSamplesPerVal) * 2;
+c = y .* sp;
+p = (x + 1) .* s;
 
 %% Run simulation
 
@@ -70,28 +72,22 @@ figure
 
 H=bar([mean(outcomes == IND_FAMILIAR, 2), mean(outcomes == IND_PARADOXICAL, 2), ...
     mean(outcomes ~= IND_FAMILIAR & outcomes ~= IND_PARADOXICAL & outcomes ~= IND_NOCONV, 2), ...
-    mean(outcomes == IND_NOCONV, 2)], 'stacked', 'BarWidth', 1);
+    mean(outcomes == IND_NOCONV, 2)], 'stacked');
 set(H(1),'facecolor',[0 180 185] / 255);
 set(H(2),'facecolor',[255 140 0] / 255);
-set(H(3),'facecolor',[25 25 25] / 255);
+set(H(3),'facecolor',[0 0 0] / 255);
 set(H(4),'facecolor',[120 120 120] / 255);
 set(H, 'edgecolor', [0 0 0]);
 xlim([0 nThetaVals + 1]);
 ylim([0 1]);
 hl = legend('Persistent punishment', 'Persistent theft', 'Other', 'No convergence', ...
-    'location', 'southeast');
-%legend('boxoff');
-set(gca, 'XTick', [0 nThetaVals + 1], 'XTickLabel', [0 1], 'YTick', [0 1], 'YTickLabel', [0 1]);
+    'location', 'northoutside');
+legend('boxoff');
+set(gca, 'XTickLabel', {'0', '', '', '', '', '', '', '', '', '', '1'}, 'YTick', [0 1], 'YTickLabel', [0 1]);
 xlabel('Risk of victim exploitation (?)');
 ylabel(sprintf('Probability of\nequilibrium'));
 set(gca, 'LineWidth', 4);
-set(gca, 'FontSize', 60);
-set(gcf,'PaperOrientation','landscape');
-set(gcf,'PaperUnits','normalized');
-set(gcf,'PaperPosition', [0 0 1 1]);
-
-%%
-print(gcf, '-dpdf', 'test1.pdf')
+set(gca, 'FontSize', 55);
 
 %% Draw (part 2)
 hlt = text(...
@@ -99,7 +95,7 @@ hlt = text(...
     'String', 'Population converges to:', ...
     'HorizontalAlignment', 'center', ...
     'VerticalAlignment', 'bottom', ...
-    'Position', [0.5, 1, 0], ...
+    'Position', [0.5, 1.05, 0], ...
     'Units', 'normalized', ...
-    'FontSize', 48, ...
+    'FontSize', 55, ...
     'FontWeight', 'bold');

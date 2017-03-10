@@ -76,9 +76,9 @@ hl = legend([H(1) H(3) H(4) H(2)], 'Steal bias: 0, Punish bias: +', 'Steal bias:
     'location', 'southeast');
 set(gca, 'XTick', [0 nParamVals + 1], 'XTickLabel', [.1 2], 'YTick', [0 1], 'YTickLabel', [0 1]);
 xlabel('Experienced cost of punishing');
-ylabel(sprintf('Probability of\nevolutionary equilibrium'));
+ylabel('Probability of evolutionary equilibrium');
 set(gca, 'LineWidth', 4);
-set(gca, 'FontSize', 60);
+set(gca, 'FontSize', 40);
 
 %% Draw (part 2)
 hlt = text(...

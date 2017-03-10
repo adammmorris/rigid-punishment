@@ -104,13 +104,12 @@ if ~useRandomParams
     xlim([0 nParamVals + 1]);
     ylim([0 1]);
     hl = legend('RL victim exploited', 'RL thief exploited', 'Other', ...
-        'location', 'eastoutside');
-    legend('boxoff');
+        'location', 'southeast');
     set(gca, 'XTick', [0 nParamVals + 1], 'XTickLabel', [.1 2], 'YTick', [0 1], 'YTickLabel', [0 1]);
     xlabel('Experienced cost of punishing');
-    ylabel('Probability of outcome');
+    ylabel(sprintf('Probability of\nlearning outcome'));
     set(gca, 'LineWidth', 4);
-    set(gca, 'FontSize', 40);
+    set(gca, 'FontSize', 60);
 end
 
 %% Draw (part 2)
@@ -122,6 +121,6 @@ if ~useRandomParams
         'VerticalAlignment', 'bottom', ...
         'Position', [0.5, 1.05, 0], ...
         'Units', 'normalized', ...
-        'FontSize', 40, ...
+        'FontSize', 48, ...
         'FontWeight', 'bold');
 end
