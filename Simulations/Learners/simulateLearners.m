@@ -91,7 +91,7 @@ end
 % influence of the param values on the outcome
 if useRandomParams
     good = result ~= OTHER;
-    xs = [s(good) sp(good) c(good) p(good)];
+    xs = [s(good) c(good) p(good)];
     [b, ~, stats] = glmfit(xs, result(good) .* (1 - 1 * (result(good) == 2)), 'binomial');
     betas = b(2:end)' .* std(xs) ./ std(result(good));
 end
