@@ -21,7 +21,7 @@ nSamplesPerVal = 100;
 
 % Randomly sample other parameters
 N = 10000;
-mutation = .2;
+mutation = .01 + rand(nThetaVals, nSamplesPerVal)*.65;
 s = .1 + rand(nThetaVals, nSamplesPerVal)*19.9; % .1 to 20
 sp = s; % for simplicity, fix the cost of being stolen (sp) from at s
 c = .1 + rand(nThetaVals, nSamplesPerVal)*19.19; % .1 to 20
