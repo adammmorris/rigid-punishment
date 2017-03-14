@@ -1,4 +1,4 @@
-This repository contains all the code & data used in “The evolution of second-party punishment depends on its learning dynamics“, by Adam Morris, James MacGlashan, Michael Littman, & Fiery Cushman.
+This repository contains all the code & data used in “The evolution of flexibility and rigidity in second-party punishment“, by Adam Morris, James MacGlashan, Michael Littman, & Fiery Cushman.
 
 SIMULATIONS
 
