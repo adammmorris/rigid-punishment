@@ -72,11 +72,13 @@ set(H(4),'facecolor',[0 0 0] / 255);
 set(H, 'edgecolor', [0 0 0]);
 xlim([0 nParamVals + 1]);
 ylim([0 1]);
-hl = legend([H(1) H(3) H(4) H(2)], 'Steal bias: 0, Punish bias: +', 'Steal bias: +, Punish bias: 0', 'Other', 'No convergence', ...
+%hl = legend([H(1) H(3) H(4) H(2)], 'Steal bias: 0, Punish bias: +', 'Steal bias: +, Punish bias: 0', 'Other', 'No convergence', ...
+%    'location', 'southeast');
+hl = legend([H(1) H(3) H(2)], 'Rigid punishment', 'Flexible punishment', 'No convergence', ...
     'location', 'southeast');
 set(gca, 'XTick', [0 nParamVals + 1], 'XTickLabel', [.1 2], 'YTick', [0 1], 'YTickLabel', [0 1]);
-xlabel('Experienced cost of punishing');
-ylabel(sprintf('Probability of\nevolutionary equilibrium'));
+xlabel('Cost of punishing');
+ylabel(sprintf('Prob. of\nequilibrium'));
 set(gca, 'LineWidth', 4);
 set(gca, 'FontSize', 60);
 

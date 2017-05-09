@@ -101,17 +101,19 @@ if ~useRandomParams
     figure
 
     H = bar(result_total, 'stacked');
-    set(H(1),'facecolor',[150 0 150] / 255);
-    set(H(2),'facecolor',[50 150 0] / 255);
+    %set(H(1),'facecolor',[150 0 150] / 255);
+    set(H(1),'facecolor',[0 0 0] / 255);
+    %set(H(2),'facecolor',[50 150 0] / 255);
+    set(H(2),'facecolor',[255 255 255] / 255);
     set(H(3),'facecolor',[0 0 0]);
-    set(H, 'edgecolor', [0 0 0]);
+    set(H, 'edgecolor', [255 255 255] / 255);
     xlim([0 nParamVals + 1]);
     ylim([0 1]);
-    hl = legend('RL victim exploited', 'RL thief exploited', 'Other', ...
-        'location', 'southeast');
+    %hl = legend('RL victim exploited', 'RL thief exploited', 'Other', ...
+    %    'location', 'southeast');
     set(gca, 'XTick', [0 nParamVals + 1], 'XTickLabel', [.1 2], 'YTick', [0 1], 'YTickLabel', [0 1]);
-    xlabel('Experienced cost of punishing');
-    ylabel(sprintf('Probability of\nlearning outcome'));
+    xlabel('Cost of punishing');
+    ylabel(sprintf('Prob. that\nvictim is exploited'));
     set(gca, 'LineWidth', 4);
     set(gca, 'FontSize', 60);
 end
