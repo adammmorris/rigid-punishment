@@ -11,18 +11,18 @@
 
 % Simulation parameters
 nAgents = 100;
-nGenerations = 10000;
-invTemp = 1 / 1000;
+nGenerations = 2000;
+invTemp = 1 / 10000;
 
 % Vary theta
-thetaVals = linspace(0, 1, 101);
+thetaVals = linspace(0, 1, 11);
 nThetaVals = length(thetaVals);
-nSamplesPerVal = 100;
+nSamplesPerVal = 50;
 
 % Randomly sample other parameters
 N = 10000;
-%mutation = .01 + rand(nThetaVals, nSamplesPerVal)*.65;
-mutation = .01 + betarnd(1, 24, nThetaVals, nSamplesPerVal);
+mutation = .01 + rand(nThetaVals, nSamplesPerVal)*.65;
+%mutation = .01 + betarnd(1, 24, nThetaVals, nSamplesPerVal);
 s = .1 + rand(nThetaVals, nSamplesPerVal)*19.9; % .1 to 20
 sp = s; % for simplicity, fix the cost of being stolen (sp) from at s
 c = .1 + rand(nThetaVals, nSamplesPerVal)*19.19; % .1 to 20

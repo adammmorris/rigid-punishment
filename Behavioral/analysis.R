@@ -1,15 +1,31 @@
-require(lme4);
-require(lmerTest);
-require(dplyr);
+require(lme4)
+require(lmerTest)
+require(dplyr)
 
 # Load data, focus on persistent opponents
 df <- read.csv('data.csv')
+
+match = 1
+df$match = NULL
+for (i in 1:nrow(df)) {
+  if (i > 1 && df$subject[i] != df$subject[i-1]) {
+    match = 1
+  } else if (df$newOpp[i] == 1) {
+    match = match + 1
+  }
+  
+  df$match[i] = match
+}
+
 df.persist <- df %>% filter(oppPersistent == 1)
 df.persist$rt <- log(df.persist$rt)
 df.persist$rt <- df.persist$rt - mean(df.persist$rt)
 
+
 # Run mixed-effect model, compare to null
-model = glmer(choiceAction ~ roleVictim * matchRound + (1 + roleVictim * matchRound | subject),
+model = glmer(choiceAction ~ roleVictim * matchRound * match +
+                (1 | subject) + (0 + match | subject) + (0 + roleVictim | subject) + (0 + matchRound | subject) +
+                (0 + roleVictim:matchRound | subject),
               family = binomial, data = df.persist);
 model.null = glmer(choiceAction ~ roleVictim + matchRound + (1 + roleVictim * matchRound | subject),
               family = binomial, data = df.persist);
