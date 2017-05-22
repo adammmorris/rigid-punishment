@@ -10,17 +10,17 @@
 %% Set parameters
 
 % Simulation parameters
-nAgents = 100;
-nGenerations = 2000;
-invTemp = 1 / 10000;
+nAgents = round(25 + rand(nThetaVals, nSamplesPerVal) * 75);
+nGenerations = 10000;
+invTemp = 1 / 10000 + rand(nThetaVals, nSamplesPerVal) * (1 / 100 - 1 / 10000);
 
 % Vary theta
-thetaVals = linspace(0, 1, 11);
+thetaVals = linspace(0, 1, 101);
 nThetaVals = length(thetaVals);
-nSamplesPerVal = 50;
+nSamplesPerVal = 100;
 
 % Randomly sample other parameters
-N = 10000;
+N = 2000 + rand(nThetaVals, nSamplesPerVal) * 8000;
 mutation = .01 + rand(nThetaVals, nSamplesPerVal)*.65;
 %mutation = .01 + betarnd(1, 24, nThetaVals, nSamplesPerVal);
 s = .1 + rand(nThetaVals, nSamplesPerVal)*19.9; % .1 to 20
@@ -43,13 +43,13 @@ for thisParamVal = 1:nThetaVals
     
     % Run all the samples
     parfor thisSample = 1:nSamplesPerVal
-        payoffs = getPayoffs(N, ...
+        payoffs = getPayoffs(N(thisParamVal, thisSample), ...
             s(thisParamVal, thisSample), sp(thisParamVal, thisSample), ...
             c(thisParamVal, thisSample), p(thisParamVal, thisSample), ...
             theta);
         
         [~, ~, population_full] = ...
-            runMoran(payoffs, nAgents, nGenerations, invTemp, mutation(thisParamVal, thisSample));
+            runMoran(payoffs, nAgents(thisParamVal, thisSample), nGenerations, invTemp(thisParamVal, thisSample), mutation(thisParamVal, thisSample));
         
         % What % of the population must be a certain strategy to count the
         % simulation as having converged to that strategy?
