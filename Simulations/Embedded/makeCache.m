@@ -8,17 +8,26 @@
 % July 2016
 
 %% Set params
-nMatches = 100;
+nMatches = 20;
 
-N = 10000; % # of rounds in game
 s = 1; % benefit of stealing
 sp = 1; % cost of being stolen from
 c = 1; % cost of punishing
 p = 3; % cost of being punished
 
-lr = .2; % learning rate
-gamma = .95; % discount rate
-temp = 100; % inverse temperature for softmax function
+% Systematically vary the subjective cost of punishing.
+% 'c' will get multiplied by this value in the agent's reward function.
+paramVals = linspace(.1, 1.5, 10);
+nParamVals = length(paramVals);
+
+%N = round(2000 + rand(nParamVals, nMatches) * 8000); % # of rounds in each match
+N = 10000;
+
+%lr = .05 + rand(nParamVals, nMatches) * .2; % learning rate
+lr = .2;
+gamma = .95;
+%temp = 10 + rand(nParamVals, nMatches) * (1000 - 10); % inverse temperature of softmax policy function
+temp = 100;
 agentMemory = 2; % memory in agent state space
 
 % Hedonic biases for stealing/punishing, in this order:
@@ -30,11 +39,6 @@ punishBias = [0 2 -11];
 nThiefGenes = length(stealBias);
 nPunishGenes = length(punishBias);
 
-% Systematically vary the subjective cost of punishing.
-% 'c' will get multiplied by this value in the agent's reward function.
-paramVals = linspace(.1, 2, 101);
-nParamVals = length(paramVals);
-
 %% Run sims
 % Initialize payoff matrices
 payoffs = zeros(length(stealBias), length(punishBias), 2, nMatches, nParamVals);
@@ -44,7 +48,9 @@ for thiefGene = 1:nThiefGenes
     for punishGene = 1:nPunishGenes
         for thisParamVal = 1:nParamVals
             % Set the subjective cost of punishment
-            pctPunCost = paramVals(thisParamVal);
+            %pctPunCost = paramVals(thisParamVal);
+            pctPunCost = 1;
+            c = paramVals(thisParamVal);
             
             % Get current phenotypes
             thiefPheno = stealBias(thiefGene);
@@ -61,4 +67,4 @@ for thiefGene = 1:nThiefGenes
 end
 
 %% Save
-save('cache.mat', 'payoffs', 'paramVals', 'nParamVals');
+save('cache_c.mat', 'payoffs', 'paramVals', 'nParamVals');

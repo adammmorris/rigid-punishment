@@ -9,16 +9,20 @@
 
 %% Set parameters
 
-load('cache.mat');
+load('cache_c.mat');
 
 % Simulation parameters
-nAgents = 100; % # of agents in population
-nGenerations = 10000; % # of generations to simulate
-invTemp = 1 / 1000; % inverse temperature of softmax selection function
-mutation = .2; % mutation rate
+%nAgents = round(25 + rand(nParamVals, nSamplesPerVal) * 75);
+%nGenerations = 4000;
+%invTemp = 1 / 10000 + rand(nParamVals, nSamplesPerVal) * (1 / 100 - 1 / 10000);
+%mutation = .01 + rand(nParamVals, nSamplesPerVal)*.65;
+nAgents = 100;
+nGenerations = 10000;
+invTemp = 1 / 1000;
+mutation = .2;
 
 % Vary pctPunCost
-nSamplesPerVal = 100;
+nSamplesPerVal = 25;
 
 %% Run simulation
 
@@ -37,7 +41,8 @@ for thisParamVal = 1:nParamVals
     % Run all the samples
     parfor thisSample = 1:nSamplesPerVal
         [distSteal, distPun, population_full] = ...
-            runMoran(payoffs_cur, nAgents, nGenerations, invTemp, mutation);
+            runMoran(payoffs_cur, nAgents, nGenerations, ...
+            invTemp, mutation);
         
         % What % of the population must be a certain strategy to count the
         % simulation as having converged to that strategy?

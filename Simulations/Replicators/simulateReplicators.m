@@ -9,15 +9,15 @@
 
 %% Set parameters
 
-% Simulation parameters
-nAgents = round(25 + rand(nThetaVals, nSamplesPerVal) * 75);
-nGenerations = 10000;
-invTemp = 1 / 10000 + rand(nThetaVals, nSamplesPerVal) * (1 / 100 - 1 / 10000);
-
 % Vary theta
 thetaVals = linspace(0, 1, 101);
 nThetaVals = length(thetaVals);
 nSamplesPerVal = 100;
+
+% Simulation parameters
+nAgents = round(25 + rand(nThetaVals, nSamplesPerVal) * 75);
+nGenerations = 10000;
+invTemp = 1 / 10000 + rand(nThetaVals, nSamplesPerVal) * (1 / 100 - 1 / 10000);
 
 % Randomly sample other parameters
 N = 2000 + rand(nThetaVals, nSamplesPerVal) * 8000;
