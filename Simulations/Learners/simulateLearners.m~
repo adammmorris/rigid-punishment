@@ -40,11 +40,10 @@ else
 end
 
 nParamVals = length(paramVals);
-N = round(2000 + rand(nParamVals, nMatches) * 8000); % # of rounds in each match
-%N = 10000;
+N = 2000 + rand(nParamVals, nMatches) * ; % # of rounds in each match
 
 lr = .05 + rand(nParamVals, nMatches) * .2; % learning rate
-gamma = .95; % discount rate
+gamma = .9 + rand(nParamVals, nMatches) * .09; % discount rate
 temp = 10 + rand(nParamVals, nMatches) * (1000 - 10); % inverse temperature of softmax policy function
 stealBias = 0; % hedonic bias for stealing
 punishBias = 0; % hedonic bias for punishing
@@ -56,6 +55,8 @@ result_total = zeros(nParamVals, 3);
 % what % of trials need to match a particular learning outcome
 % in order to count the match as having converged to that outcome?
 cutoff = .95;
+% which trials do we test for the above cutoff?
+cutoffRange = 5001:N;
 
 EXPLOITED = 1;
 NOT_EXPLOITED = 2;
@@ -71,11 +72,8 @@ for firstParamVal = 1:nParamVals
     
     % Loop through matches
     parfor i = 1:nMatches
-        % which trials do we test for the above cutoff?
-        cutoffRange = 1001:N(firstParamVal, i);
-        
         [~, finalQpun, ~, thiefActions, punActions] = ...
-            runMatch([N(firstParamVal, i) s sp c p], [lr(firstParamVal, i) gamma temp(firstParamVal, i) stealBias punishBias pctPunCost agentMemory]);
+            runMatch([N s sp c p], [lr(firstParamVal, i) gamma(firstParamVal, i) temp(firstParamVal, i) stealBias punishBias pctPunCost agentMemory]);
         
         if mean(thiefActions(cutoffRange) == 2) > cutoff && mean(punActions(cutoffRange) == 2) < (1-cutoff)
             % If the thief is consistently stealing & the punisher is consistently
