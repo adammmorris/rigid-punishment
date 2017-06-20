@@ -12,7 +12,7 @@ useRandomParams = false;
 
  % # of matches to simulate
 if useRandomParams, nMatches = 10000;
-else nMatches = 50;
+else nMatches = 25;
 end
 
 if useRandomParams
@@ -25,27 +25,27 @@ if useRandomParams
     paramToVary = '';
     paramVals = 1;
 else
-%     s = 1 * ones(nMatches, 1);
-%     sp = s;
-%     c = 1 * ones(nMatches, 1);
-%     p = 3 * ones(nMatches, 1);
-    s = 1;
+    s = repmat(10, nMatches, 1);
     sp = s;
-    c = 1;
-    p = 3;
+    c = repmat(10, nMatches, 1);
+    p = repmat(25, nMatches, 1);
 
     % Vary c
     paramToVary = 'c';
-    paramVals = linspace(.1, 2, 11);
+    %paramVals = linspace(.1, 1, 11);
+    paramVals = [.1, 10];
 end
 
 nParamVals = length(paramVals);
-N = round(2000 + rand(nParamVals, nMatches) * 8000); % # of rounds in each match
+%N = round(2000 + rand(nParamVals, nMatches) * 8000); % # of rounds in each match
 %N = 10000;
+N = 3000;
 
-lr = .05 + rand(nParamVals, nMatches) * .2; % learning rate
+%lr = .05 + rand(nParamVals, nMatches) * .2; % learning rate
+lr = .2;
 gamma = .95; % discount rate
-temp = 10 + rand(nParamVals, nMatches) * (1000 - 10); % inverse temperature of softmax policy function
+%temp = 10 + rand(nParamVals, nMatches) * (100 - 10); % inverse temperature of softmax policy function
+temp = 100;
 stealBias = 0; % hedonic bias for stealing
 punishBias = 0; % hedonic bias for punishing
 pctPunCost = 1; % % of punishment's cost to be included in RF
@@ -72,10 +72,10 @@ for firstParamVal = 1:nParamVals
     % Loop through matches
     parfor i = 1:nMatches
         % which trials do we test for the above cutoff?
-        cutoffRange = 1001:N(firstParamVal, i);
+        cutoffRange = 1001:N;
         
         [~, finalQpun, ~, thiefActions, punActions] = ...
-            runMatch([N(firstParamVal, i) s sp c p], [lr(firstParamVal, i) gamma temp(firstParamVal, i) stealBias punishBias pctPunCost agentMemory]);
+            runMatch([N s(i) s(i) c(i) p(i)], [lr gamma temp stealBias punishBias pctPunCost agentMemory]);
         
         if mean(thiefActions(cutoffRange) == 2) > cutoff && mean(punActions(cutoffRange) == 2) < (1-cutoff)
             % If the thief is consistently stealing & the punisher is consistently

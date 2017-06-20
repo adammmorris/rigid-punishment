@@ -10,11 +10,11 @@ N = 10000;
 s = 1;
 sp = 1;
 c = 1;
-p = 3;
+p = 2;
 
 lr = .2;
 gamma = .95;
-temp = 100;
+temp = 50;
 stealBias = 0;
 punishBias = 0;
 memory = 2;

@@ -9,9 +9,9 @@
 % July 2016
 
 % What % of the original cost do you want to use?
-pctPunCost = 1;
+pctPunCost = .1;
 
-load('cache.mat');
+load('cache_c.mat');
 figure
 
 [~, cost] = min(abs(paramVals - pctPunCost));

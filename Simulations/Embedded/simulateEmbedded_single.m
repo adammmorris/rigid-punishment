@@ -12,16 +12,17 @@
 % July 2016
 
 %% Load the cached matches
-load('cache.mat');
+load('cache_c.mat');
 
 %% Set parameters
-nAgents = 100; % # of agents in population
-nGenerations = 10000; % # of generations to simulate
-invTemp = 1 / 1000; % inverse temperature of softmax selection function
-mutation = .2; % mutation rate
+% Simulation parameters
+nAgents = 500;
+invTemp = 1 / 1000;
+nGenerations = 10000;
+mutation = .05; % mutation rate
 
 %% Run simulation
-[~, ~, population] = runMoran(payoffs(:, :, :, :, 100), nAgents, nGenerations, invTemp, mutation);
+[~, ~, population] = runMoran(payoffs(:, :, :, :, 1), nAgents, nGenerations, invTemp, mutation);
 
 %% Plot results
 results = histc(population', 1:9)';

@@ -3,7 +3,7 @@
 % strategy pair.
 % Important ones:
 %   If nGenes == 3 (i.e. embedded RL simulations), then (LS, AP) = 4 and
-%   (AS, LP) = 2.
+%   (AS, LP) = 2. Order: Flex Always Never.
 %   If nGenes == 5 (i.e. replicator simulations), then (LS, AP) = 6 and
 %   (AS, LP) = 2.
 

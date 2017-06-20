@@ -11,18 +11,23 @@
 
 load('cache_c.mat');
 
-% Simulation parameters
-%nAgents = round(25 + rand(nParamVals, nSamplesPerVal) * 75);
-%nGenerations = 4000;
-%invTemp = 1 / 10000 + rand(nParamVals, nSamplesPerVal) * (1 / 100 - 1 / 10000);
-%mutation = .01 + rand(nParamVals, nSamplesPerVal)*.65;
-nAgents = 100;
-nGenerations = 10000;
-invTemp = 1 / 1000;
-mutation = .2;
-
 % Vary pctPunCost
 nSamplesPerVal = 25;
+
+% Simulation parameters
+%nAgents = round(25 + rand(nParamVals, nSamplesPerVal) * 75);
+nAgents = 100;
+%nGenerations = 4000;
+invTemp = 1 / 10000 + rand(nParamVals, nSamplesPerVal) * (1 / 100 - 1 / 10000);
+%invTemp = repmat(1 / 1000, nParamVals, nSamplesPerVal);
+%mutation = .01 + rand(nParamVals, nSamplesPerVal)*.65;
+%mutation = .01 + betarnd(1, 24, nParamVals, nSamplesPerVal);
+%nAgents = 100;
+nGenerations = 10000;
+%invTemp = 1 / 1000;
+%mutation = repmat(.2, nParamVals, nSamplesPerVal);
+%mutation = .2;
+
 
 %% Run simulation
 
@@ -34,15 +39,15 @@ IND_PARADOXICAL = 2;
 IND_NOCONV = 0;
 
 % For each value of theta..
-for thisParamVal = 1:nParamVals
+parfor thisParamVal = 1:nParamVals
     pctPunCost = paramVals(thisParamVal);
     payoffs_cur = payoffs(:, :, :, :, thisParamVal);
     
     % Run all the samples
-    parfor thisSample = 1:nSamplesPerVal
+    for thisSample = 1:nSamplesPerVal
         [distSteal, distPun, population_full] = ...
             runMoran(payoffs_cur, nAgents, nGenerations, ...
-            invTemp, mutation);
+            invTemp(thisParamVal, thisSample), mutation);
         
         % What % of the population must be a certain strategy to count the
         % simulation as having converged to that strategy?
