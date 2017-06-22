@@ -12,35 +12,34 @@
 load('cache_c.mat');
 
 % Vary pctPunCost
-nSamplesPerVal = 10;
+nSamplesPerVal = 25;
 
 % Simulation parameters
 %nAgents = round(25 + rand(nParamVals, nSamplesPerVal) * 75);
-nAgents = 25;
+nAgents = 100;
 %nGenerations = 4000;
 invTemp = 1 / 10000 + rand(nParamVals, nSamplesPerVal) * (1 / 100 - 1 / 10000);
 %invTemp = repmat(1 / 1000, nParamVals, nSamplesPerVal);
 %mutation = .01 + rand(nParamVals, nSamplesPerVal)*.65;
 %mutation = .01 + betarnd(1, 24, nParamVals, nSamplesPerVal);
 %nAgents = 100;
-nGenerations = 3000;
+nGenerations = 10000;
 %invTemp = 1 / 1000;
 %mutation = repmat(.2, nParamVals, nSamplesPerVal);
-mutation = .2;
+%mutation = .2;
 
 
 %% Run simulation
 
 % Initialize recording arrays
-stealBias = zeros(nParamVals, nSamplesPerVal);
-punishBias = zeros(nParamVals, nSamplesPerVal);
+outcomes = zeros(nParamVals, nSamplesPerVal);
 
 %IND_FAMILIAR = 4;
 %IND_PARADOXICAL = 2;
 %IND_NOCONV = 0;
 
 % For each value of theta..
-for thisParamVal = 1:nParamVals
+parfor thisParamVal = 1:nParamVals
     pctPunCost = paramVals(thisParamVal);
     payoffs_cur = payoffs(:, :, :, :, thisParamVal);
     
@@ -55,21 +54,14 @@ for thisParamVal = 1:nParamVals
         cutoff = 1 - mutation - .1;
 
         % Classify sample
-        [thiefGene, victimGene] = getGeneComposite(population_full(1001:nGenerations, :), 3); % 1 = flexible, 2 = always, 3 = never
-        if mean(mean(thiefGene == 2)) > cutoff
-            stealBias(thisParamVal, thisSample) = 1;
-        end
-        
-        if mean(mean(victimGene == 2)) > cutoff
-            punishBias(thisParamVal, thisSample) = 1;
+        [thiefGene, victimGene] = getGeneComposite(population_full(1001:nGenerations, :)); % 0 = flexible, 1 = always, 2 = never
+            if mean(mean(thiefGene) == ) > cutoff
+                outcomes(thisParamVal, thisSample) = eq;
+                break;
+            end
         end
     end
 end
-
-%% Draw
-
-plot(paramVals, mean(stealBias, 2), paramVals, mean(punishBias, 2))
-
 
 %% Draw (part 1)
 figure
