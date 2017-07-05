@@ -12,40 +12,41 @@ useRandomParams = false;
 
  % # of matches to simulate
 if useRandomParams, nMatches = 10000;
-else nMatches = 25;
+else nMatches = 100;
 end
 
 if useRandomParams
-    s = .1 + rand(nMatches,1)*19.19; % .1 to 20
+    s = rand(nMatches,1)*10; % .1 to 20
     sp = s; % for simplicity, fix the cost of being stolen from (sp) at s
-    c = .1 + rand(nMatches,1)*19.19; % .1 to 20
-    p = s + rand(nMatches,1)*30; % s to s + 30
+    c = rand(nMatches,1)*10; % .1 to 20
+    p = s + rand(nMatches,1)*20; % s to s + 30
     
     % This doesn't matter here
     paramToVary = '';
     paramVals = 1;
 else
-    s = repmat(10, nMatches, 1);
+    s = repmat(5, nMatches, 1);
     sp = s;
-    c = repmat(10, nMatches, 1);
-    p = repmat(25, nMatches, 1);
+    c = repmat(5, nMatches, 1);
+    p = repmat(15, nMatches, 1);
 
     % Vary c
     paramToVary = 'c';
-    %paramVals = linspace(.1, 1, 11);
-    paramVals = [.1, 10];
+    paramVals = linspace(.1, 10, 100);
+    %paramVals = [.1, 10];
 end
 
 nParamVals = length(paramVals);
 %N = round(2000 + rand(nParamVals, nMatches) * 8000); % # of rounds in each match
 %N = 10000;
-N = 3000;
+N = 5000;
 
-%lr = .05 + rand(nParamVals, nMatches) * .2; % learning rate
-lr = .2;
-gamma = .95; % discount rate
-%temp = 10 + rand(nParamVals, nMatches) * (100 - 10); % inverse temperature of softmax policy function
-temp = 100;
+lr = .05 + rand(nParamVals, nMatches) * .2; % learning rate
+%lr = .2;
+%gamma = .95; % discount rate
+gamma = .75 + rand(nParamVals, nMatches) * (.99 - .75);
+temp = 10 + rand(nParamVals, nMatches) * (100 - 10); % inverse temperature of softmax policy function
+%temp = 100;
 stealBias = 0; % hedonic bias for stealing
 punishBias = 0; % hedonic bias for punishing
 pctPunCost = 1; % % of punishment's cost to be included in RF
@@ -75,7 +76,7 @@ for firstParamVal = 1:nParamVals
         cutoffRange = 1001:N;
         
         [~, finalQpun, ~, thiefActions, punActions] = ...
-            runMatch([N s(i) s(i) c(i) p(i)], [lr gamma temp stealBias punishBias pctPunCost agentMemory]);
+            runMatch([N s(i) s(i) c(i) p(i)], [lr(firstParamVal, i) gamma(firstParamVal, i) temp(firstParamVal, i) stealBias punishBias pctPunCost agentMemory]);
         
         if mean(thiefActions(cutoffRange) == 2) > cutoff && mean(punActions(cutoffRange) == 2) < (1-cutoff)
             % If the thief is consistently stealing & the punisher is consistently
@@ -115,11 +116,11 @@ if ~useRandomParams
     %set(H, 'edgecolor', [255 255 255] / 255);
     xlim([0 nParamVals + 1]);
     ylim([0 1]);
-    %hl = legend('RL victim exploited', 'RL thief exploited', 'Other', ...
-    %    'location', 'southeast');
-    set(gca, 'XTick', [0 nParamVals + 1], 'XTickLabel', [.1 2], 'YTick', [0 1], 'YTickLabel', [0 1]);
+    hl = legend('Thief learns to steal', 'Victim learns to punish', 'Other', ...
+        'location', 'southeast');
+    set(gca, 'XTick', [0 nParamVals + 1], 'XTickLabel', [.1 10], 'YTick', [0 1], 'YTickLabel', [0 1]);
     xlabel('Cost of punishing');
-    ylabel(sprintf('Prob. that\nvictim is exploited'));
+    ylabel(sprintf('Probability of\nlearning outcome'));
     set(gca, 'LineWidth', 4);
     set(gca, 'FontSize', 60);
 end

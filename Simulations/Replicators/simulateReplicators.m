@@ -15,18 +15,22 @@ nThetaVals = length(thetaVals);
 nSamplesPerVal = 100;
 
 % Simulation parameters
-nAgents = round(25 + rand(nThetaVals, nSamplesPerVal) * 75);
+%nAgents = round(25 + rand(nThetaVals, nSamplesPerVal) * 75);
+nAgents = 100;
 nGenerations = 10000;
 invTemp = 1 / 10000 + rand(nThetaVals, nSamplesPerVal) * (1 / 100 - 1 / 10000);
+%invTemp = repmat(1 / 1000, nThetaVals, nSamplesPerVal);
 
 % Randomly sample other parameters
-N = 2000 + rand(nThetaVals, nSamplesPerVal) * 8000;
-mutation = .01 + rand(nThetaVals, nSamplesPerVal)*.65;
+%N = 2000 + rand(nThetaVals, nSamplesPerVal) * 8000;
+N = 5000;
+mutation = rand(nThetaVals, nSamplesPerVal)*2/3;
 %mutation = .01 + betarnd(1, 24, nThetaVals, nSamplesPerVal);
-s = .1 + rand(nThetaVals, nSamplesPerVal)*19.9; % .1 to 20
+%mutation = repmat(.2, nThetaVals, nSamplesPerVal);
+s = rand(nThetaVals, nSamplesPerVal)*10; % .1 to 20
 sp = s; % for simplicity, fix the cost of being stolen (sp) from at s
-c = .1 + rand(nThetaVals, nSamplesPerVal)*19.19; % .1 to 20
-p = s + rand(nThetaVals, nSamplesPerVal)*30; % s to s + 30
+c = rand(nThetaVals, nSamplesPerVal)*10; % .1 to 20
+p = s + rand(nThetaVals, nSamplesPerVal)*20; % s to s + 30
 
 %% Run simulation
 
@@ -38,18 +42,18 @@ IND_PARADOXICAL = 21;
 IND_NOCONV = 0;
 
 % For each value of theta..
-for thisParamVal = 1:nThetaVals
+parfor thisParamVal = 1:nThetaVals
     theta = thetaVals(thisParamVal);
     
     % Run all the samples
-    parfor thisSample = 1:nSamplesPerVal
-        payoffs = getPayoffs(N(thisParamVal, thisSample), ...
+    for thisSample = 1:nSamplesPerVal
+        payoffs = getPayoffs(N, ...
             s(thisParamVal, thisSample), sp(thisParamVal, thisSample), ...
             c(thisParamVal, thisSample), p(thisParamVal, thisSample), ...
             theta);
         
         [~, ~, population_full] = ...
-            runMoran(payoffs, nAgents(thisParamVal, thisSample), nGenerations, invTemp(thisParamVal, thisSample), mutation(thisParamVal, thisSample));
+            runMoran(payoffs, nAgents, nGenerations, invTemp(thisParamVal, thisSample), mutation(thisParamVal, thisSample));
         
         % What % of the population must be a certain strategy to count the
         % simulation as having converged to that strategy?
@@ -76,12 +80,13 @@ set(H(2),'facecolor',[255 140 0] / 255);
 set(H(3),'facecolor',[25 25 25] / 255);
 set(H(4),'facecolor',[120 120 120] / 255);
 set(H, 'edgecolor', [0 0 0]);
+%set(H,'EdgeColor', 'none');
 xlim([0 nThetaVals + 1]);
 ylim([0 1]);
-hl = legend('Persistent punishment', 'Persistent theft', 'Other', 'No convergence', ...
+hl = legend('Rigid punishment', 'Rigid theft', 'Other', 'No convergence', ...
     'location', 'southeast');
 set(gca, 'XTick', [0 nThetaVals + 1], 'XTickLabel', [0 1], 'YTick', [0 1], 'YTickLabel', [0 1]);
-xlabel('Risk of victim exploitation (?)');
+xlabel('Vulnerability of flexible victims (?)');
 ylabel(sprintf('Probability of\nequilibrium'));
 set(gca, 'LineWidth', 4);
 set(gca, 'FontSize', 60);

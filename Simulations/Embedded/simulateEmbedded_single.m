@@ -16,7 +16,7 @@ load('cache_c.mat');
 
 %% Set parameters
 % Simulation parameters
-nAgents = 500;
+nAgents = 100;
 invTemp = 1 / 1000;
 nGenerations = 10000;
 mutation = .05; % mutation rate

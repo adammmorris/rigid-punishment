@@ -19,23 +19,23 @@ pctPunCost = 1;
 
 % Systematically vary the subjective cost of punishing.
 % 'c' will get multiplied by this value in the agent's reward function.
-%paramVals = linspace(.1, 1, 10);
-paramVals = [.1, 1];
+paramVals = linspace(.1, 2, 100);
+%paramVals = [.1, 10];
 nParamVals = length(paramVals);
 
 N = 5000; % # of rounds in each match
 
-lr = .05 + rand(nParamVals, nMatches) * .2; % learning rate
-%lr = .2;
+%lr = .05 + rand(nParamVals, nMatches) * .2; % learning rate
+lr = .2;
 gamma = .95;
-temp = 10 + rand(nParamVals, nMatches) * (100 - 10); % inverse temperature of softmax policy function
-%temp = 100;
+%temp = 10 + rand(nParamVals, nMatches) * (100 - 10); % inverse temperature of softmax policy function
+temp = 20;
 agentMemory = 2; % memory in agent state space
 
 % Hedonic biases for stealing/punishing, in this order:
 % [FS/FP AS/APT NS/NP]
 stealBias = [0 11 -6];
-punishBias = [0 6 -52];
+punishBias = [0 11 -52];
 
 % Get the # of alleles for each gene component
 nThiefGenes = length(stealBias);
@@ -50,8 +50,8 @@ parfor thiefGene = 1:nThiefGenes
     for punishGene = 1:nPunishGenes
         for thisParamVal = 1:nParamVals
             % Set the subjective cost of punishment
-            %pctPunCost = paramVals(thisParamVal);
             pctPunCost = paramVals(thisParamVal);
+            %c = paramVals(thisParamVal);
             
             % Get current phenotypes
             thiefPheno = stealBias(thiefGene);
@@ -68,4 +68,4 @@ parfor thiefGene = 1:nThiefGenes
 end
 
 %% Save
-save('cache_c.mat', 'payoffs', 'paramVals', 'nParamVals');
+save('cache_lesion_rand.mat', 'payoffs', 'paramVals', 'nParamVals');
