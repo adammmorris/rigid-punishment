@@ -12,7 +12,7 @@
 %% Set parameters% Simulation parameters
 nAgents = 100;
 nGenerations = 10000;
-invTemp = 1 / 10000;
+invTemp = 1 / 1000;
 
 % Vary theta
 thetaVals = linspace(0, 1, 101);

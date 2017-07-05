@@ -33,23 +33,22 @@ else
     % Vary c
     paramToVary = 'c';
     paramVals = linspace(.1, 10, 100);
-    %paramVals = [.1, 10];
 end
 
 nParamVals = length(paramVals);
-%N = round(2000 + rand(nParamVals, nMatches) * 8000); % # of rounds in each match
-%N = 10000;
 N = 5000;
 
-lr = .05 + rand(nParamVals, nMatches) * .2; % learning rate
-%lr = .2;
-%gamma = .95; % discount rate
-gamma = .75 + rand(nParamVals, nMatches) * (.99 - .75);
-temp = 10 + rand(nParamVals, nMatches) * (100 - 10); % inverse temperature of softmax policy function
-%temp = 100;
+% Use either fixed, or random, RL parameters
+lr = repmat(.2, nParamVals, nMatches); % learning rate
+%lr = .05 + rand(nParamVals, nMatches) * .2;
+gamma = repmat(.95, nParamVals, nMatches); % discount rate
+%gamma = .75 + rand(nParamVals, nMatches) * (.99 - .75);
+temp = repmat(20, nParamVals, nMatches); % inverse temperature of softmax policy function
+%temp = 10 + rand(nParamVals, nMatches) * (100 - 10); 
+
 stealBias = 0; % hedonic bias for stealing
 punishBias = 0; % hedonic bias for punishing
-pctPunCost = 1; % % of punishment's cost to be included in RF
+pctPunCost = 1; % % of punishment's cost to be included in reward function (used to manipulate "perceived cost")
 agentMemory = 2; % agent memory
 
 %% Run sims
@@ -103,17 +102,15 @@ if useRandomParams
     betas = b(2:end)' .* std(xs) ./ std(result(good));
 end
 
-%% Draw (part 1)
+%% Plot
+
 if ~useRandomParams
     figure
 
     H = bar(result_total, 'stacked');
     set(H(1),'facecolor',[150 0 150] / 255);
-    %set(H(1),'facecolor',[0 0 0] / 255);
     set(H(2),'facecolor',[50 150 0] / 255);
-    %set(H(2),'facecolor',[255 255 255] / 255);
     set(H(3),'facecolor',[0 0 0]);
-    %set(H, 'edgecolor', [255 255 255] / 255);
     xlim([0 nParamVals + 1]);
     ylim([0 1]);
     hl = legend('Thief learns to steal', 'Victim learns to punish', 'Other', ...

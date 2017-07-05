@@ -9,27 +9,34 @@
 
 %% Set params
 nMatches = 100;
+N = 5000; % # of rounds in each match
 
 s = 5; % .1 to 20
 sp = 5; % for simplicity, fix the cost of being stolen from (sp) at s
 c = 5; % .1 to 20
 p = 15; % s to s + 30
 
-pctPunCost = 1;
+pctPunCost = 1; % % of punishment's cost to be included in reward function (used to manipulate "perceived cost")
 
-% Systematically vary the subjective cost of punishing.
-% 'c' will get multiplied by this value in the agent's reward function.
-paramVals = linspace(.1, 2, 100);
-%paramVals = [.1, 10];
+manipulate_perceived_cost = true;
+
+if manipulate_perceived_cost
+    % Systematically vary the subjective cost of punishing.
+    % 'c' will get multiplied by this value in the agent's reward function.
+    paramVals = linspace(.1, 2, 100);
+else
+    % Systematically vary the objective cost of punishing.
+    paramVals = linspace(.1, 10, 100);
+end
 nParamVals = length(paramVals);
 
-N = 5000; % # of rounds in each match
+% Use either fixed, or random, RL parameters
+lr = .2; % learning rate
+%lr = .05 + rand(nParamVals, nMatches) * .2;
+gamma = .95; % discount rate%temp = 20;
+temp = 20; % inverse temperature of softmax policy function
+%temp = 10 + rand(nParamVals, nMatches) * (100 - 10); 
 
-%lr = .05 + rand(nParamVals, nMatches) * .2; % learning rate
-lr = .2;
-gamma = .95;
-%temp = 10 + rand(nParamVals, nMatches) * (100 - 10); % inverse temperature of softmax policy function
-temp = 20;
 agentMemory = 2; % memory in agent state space
 
 % Hedonic biases for stealing/punishing, in this order:
@@ -46,12 +53,16 @@ nPunishGenes = length(punishBias);
 payoffs = zeros(length(stealBias), length(punishBias), 2, nMatches, nParamVals);
 
 % Loop through all thief & victim genes
-parfor thiefGene = 1:nThiefGenes
+for thiefGene = 1:nThiefGenes
     for punishGene = 1:nPunishGenes
         for thisParamVal = 1:nParamVals
-            % Set the subjective cost of punishment
-            pctPunCost = paramVals(thisParamVal);
-            %c = paramVals(thisParamVal);
+            % Set the cost of punishment
+            if manipulate_perceived_cost
+                pctPunCost = paramVals(thisParamVal);
+            else
+                c = paramVals(thisParamVal);
+            end
+            
             
             % Get current phenotypes
             thiefPheno = stealBias(thiefGene);
@@ -68,4 +79,4 @@ parfor thiefGene = 1:nThiefGenes
 end
 
 %% Save
-save('cache_lesion_rand.mat', 'payoffs', 'paramVals', 'nParamVals');
+save('cache.mat', 'payoffs', 'paramVals', 'nParamVals');

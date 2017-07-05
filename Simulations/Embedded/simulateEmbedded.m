@@ -9,35 +9,23 @@
 
 %% Set parameters
 
-load('cache_c.mat');
+load('cache.mat');
 
-% Vary pctPunCost
-nSamplesPerVal = 100;
-
-% Simulation parameters
-%nAgents = round(25 + rand(nParamVals, nSamplesPerVal) * 75);
+nSamplesPerVal = 100; % # of simulations to run per value of c
 nAgents = 100;
-%nGenerations = 4000;
-%invTemp = 1 / 10000 + rand(nParamVals, nSamplesPerVal) * (1 / 100 - 1 / 10000);
-invTemp = repmat(1 / 1000, nParamVals, nSamplesPerVal);
-%mutation = .01 + rand(nParamVals, nSamplesPerVal)*.65;
-%mutation = .01 + betarnd(1, 24, nParamVals, nSamplesPerVal);
-%nAgents = 100;
 nGenerations = 10000;
-%invTemp = 1 / 1000;
-mutation = repmat(.2, nParamVals, nSamplesPerVal);
-%mutation = .2;
 
+% Set either fixed, or random, selection intensity / mutation rate
+w = repmat(1 / 1000, nParamVals, nSamplesPerVal);
+%w = 1 / 10000 + rand(nParamVals, nSamplesPerVal) * (1 / 100 - 1 / 10000);
+mu = repmat(.05, nParamVals, nSamplesPerVal);
+%mu = .01 + rand(nParamVals, nSamplesPerVal)*.65;
 
 %% Run simulation
 
 % Initialize recording arrays
 stealBias = zeros(nParamVals, nSamplesPerVal);
 punishBias = zeros(nParamVals, nSamplesPerVal);
-
-%IND_FAMILIAR = 4;
-%IND_PARADOXICAL = 2;
-%IND_NOCONV = 0;
 
 % For each value of theta..
 parfor thisParamVal = 1:nParamVals
@@ -48,11 +36,11 @@ parfor thisParamVal = 1:nParamVals
     for thisSample = 1:nSamplesPerVal
         [distSteal, distPun, population_full] = ...
             runMoran(payoffs_cur, nAgents, nGenerations, ...
-            invTemp(thisParamVal, thisSample), mutation(thisParamVal, thisSample));
+            w(thisParamVal, thisSample), mu(thisParamVal, thisSample));
         
         % What % of the population must be a certain strategy to count the
         % simulation as having converged to that strategy?
-        cutoff = 1 - mutation(thisParamVal, thisSample) - .1;
+        cutoff = 1 - mu(thisParamVal, thisSample) - .1;
 
         % Classify sample
         [thiefGene, victimGene] = getGeneComposite(population_full(1001:nGenerations, :), 3); % 1 = flexible, 2 = always, 3 = never
@@ -66,7 +54,7 @@ parfor thisParamVal = 1:nParamVals
     end
 end
 
-%% Draw
+%% Plot
 
 plot(paramVals, mean(punishBias, 2), paramVals, mean(stealBias, 2), '--', 'LineWidth', 4)
 set(gca, 'XTick', [0 10], 'XTickLabel', [.1 10], 'YTick', [0 1], 'YTickLabel', [0 1]);
@@ -76,43 +64,3 @@ ylabel(sprintf('Prob. of evolving\nreward for action'));
 set(gca, 'FontSize', 60);
 hl = legend('Punishment', 'Theft', ...
     'location', 'southeast');
-
-%% Draw (part 1)
-% figure
-% 
-% % H=bar([mean(outcomes == IND_FAMILIAR, 2), mean(outcomes == IND_PARADOXICAL, 2), ...
-% %     mean(outcomes ~= IND_FAMILIAR & outcomes ~= IND_PARADOXICAL & outcomes ~= IND_NOCONV, 2), ...
-% %     mean(outcomes == IND_NOCONV, 2)], 'stacked');
-% H=bar([
-%     mean(outcomes == IND_FAMILIAR, 2), ...
-%     mean(outcomes == IND_NOCONV, 2), ...
-%     mean(outcomes == IND_PARADOXICAL, 2), ...
-%     mean(outcomes ~= IND_FAMILIAR & outcomes ~= IND_PARADOXICAL & outcomes ~= IND_NOCONV, 2), ...
-%     ], 'stacked');
-% set(H(1),'facecolor',[0 180 185] / 255);
-% set(H(2),'facecolor',[120 120 120] / 255);
-% set(H(3),'facecolor',[255 140 0] / 255);
-% set(H(4),'facecolor',[0 0 0] / 255);
-% set(H, 'edgecolor', [0 0 0]);
-% xlim([0 nParamVals + 1]);
-% ylim([0 1]);
-% %hl = legend([H(1) H(3) H(4) H(2)], 'Steal bias: 0, Punish bias: +', 'Steal bias: +, Punish bias: 0', 'Other', 'No convergence', ...
-% %    'location', 'southeast');
-% hl = legend([H(1) H(3) H(2)], 'Rigid punishment', 'Flexible punishment', 'No convergence', ...
-%     'location', 'southeast');
-% set(gca, 'XTick', [0 nParamVals + 1], 'XTickLabel', [.1 2], 'YTick', [0 1], 'YTickLabel', [0 1]);
-% xlabel('Cost of punishing');
-% ylabel(sprintf('Prob. of\nequilibrium'));
-% set(gca, 'LineWidth', 4);
-% set(gca, 'FontSize', 60);
-% 
-% %% Draw (part 2)
-% hlt = text(...
-%     'Parent', hl.DecorationContainer, ...
-%     'String', 'Equilibrium genotype', ...
-%     'HorizontalAlignment', 'center', ...
-%     'VerticalAlignment', 'bottom', ...
-%     'Position', [0.5, 1.05, 0], ...
-%     'Units', 'normalized', ...
-%     'FontSize', 40, ...
-%     'FontWeight', 'bold');

@@ -12,21 +12,19 @@
 % Vary theta
 thetaVals = linspace(0, 1, 101);
 nThetaVals = length(thetaVals);
-nSamplesPerVal = 100;
 
-% Simulation parameters
-%nAgents = round(25 + rand(nThetaVals, nSamplesPerVal) * 75);
+nSamplesPerVal = 100; % # of simulations to run per value of c
 nAgents = 100;
 nGenerations = 10000;
-invTemp = 1 / 10000 + rand(nThetaVals, nSamplesPerVal) * (1 / 100 - 1 / 10000);
-%invTemp = repmat(1 / 1000, nThetaVals, nSamplesPerVal);
+N = 5000; % # of rounds in game
 
-% Randomly sample other parameters
-%N = 2000 + rand(nThetaVals, nSamplesPerVal) * 8000;
-N = 5000;
-mutation = rand(nThetaVals, nSamplesPerVal)*2/3;
-%mutation = .01 + betarnd(1, 24, nThetaVals, nSamplesPerVal);
-%mutation = repmat(.2, nThetaVals, nSamplesPerVal);
+% Set either fixed, or random, selection intensity / mutation rate
+w = repmat(1 / 1000, nThetaVals, nSamplesPerVal);
+%w = 1 / 10000 + rand(nParamVals, nSamplesPerVal) * (1 / 100 - 1 / 10000);
+mu = repmat(.05, nThetaVals, nSamplesPerVal);
+%mu = rand(nThetaVals, nSamplesPerVal)*2/3;
+
+% Randomly sample payoffs
 s = rand(nThetaVals, nSamplesPerVal)*10; % .1 to 20
 sp = s; % for simplicity, fix the cost of being stolen (sp) from at s
 c = rand(nThetaVals, nSamplesPerVal)*10; % .1 to 20
@@ -53,11 +51,11 @@ parfor thisParamVal = 1:nThetaVals
             theta);
         
         [~, ~, population_full] = ...
-            runMoran(payoffs, nAgents, nGenerations, invTemp(thisParamVal, thisSample), mutation(thisParamVal, thisSample));
+            runMoran(payoffs, nAgents, nGenerations, w(thisParamVal, thisSample), mu(thisParamVal, thisSample));
         
         % What % of the population must be a certain strategy to count the
         % simulation as having converged to that strategy?
-        cutoff = 1 - mutation(thisParamVal, thisSample) - .1;
+        cutoff = 1 - mu(thisParamVal, thisSample) - .1;
 
         % Classify sample
         for eq = 1:25
@@ -69,7 +67,8 @@ parfor thisParamVal = 1:nThetaVals
     end
 end
 
-%% Draw (part 1)
+%% Plot
+
 figure
 
 H=bar([mean(outcomes == IND_FAMILIAR, 2), mean(outcomes == IND_PARADOXICAL, 2), ...
@@ -80,7 +79,6 @@ set(H(2),'facecolor',[255 140 0] / 255);
 set(H(3),'facecolor',[25 25 25] / 255);
 set(H(4),'facecolor',[120 120 120] / 255);
 set(H, 'edgecolor', [0 0 0]);
-%set(H,'EdgeColor', 'none');
 xlim([0 nThetaVals + 1]);
 ylim([0 1]);
 hl = legend('Rigid punishment', 'Rigid theft', 'Other', 'No convergence', ...

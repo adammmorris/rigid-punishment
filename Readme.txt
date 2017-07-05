@@ -1,4 +1,4 @@
-This repository contains all the code & data used in “The evolution of flexibility and rigidity in second-party punishment“, by Adam Morris, James MacGlashan, Michael Littman, & Fiery Cushman.
+This repository contains all the code & data used in “The evolution of flexibility and rigidity in retaliatory punishment“, by Adam Morris, James MacGlashan, Michael Littman, & Fiery Cushman.
 
 SIMULATIONS
 
@@ -6,11 +6,11 @@ The "Simulations" folder contains all the simulation code, and all the reported 
 
 "Core" contains the main algorithms used in the simulations. "runMoran.m" simulates a Moran process, and "runMatch.m" simulates two RL agents playing the steal/punish game.
 
-"Replicators" is where we simulate the evolutionary dynamics of the steal/punish game with an enlarged strategy space. "getPayoffs.m" returns the payoff matrix for any set of parameters, and "simulateReplicators" runs the simulations. "replicators.mat" has the reported results.
+"Replicators" is where we simulate the evolutionary dynamics of the steal/punish game with an enlarged strategy space. "getPayoffs.m" returns the payoff matrix for any set of parameters, and "simulateReplicators" runs the simulations. The "results" folder has the reported results. Each filename specifies the selection intensity ("100" = 1 / 100, "1000" = 1 / 1000, etc) and mutation rate ("p05" = .05, etc). "Random" indicates that we randomly sampled the Moran parameters.
 
-"Learners" is where we simulate two (unbiased) RL agents playing each other in the steal/punish game. "simulateLearners.m" runs the simulations (either with randomly sampled parameters or systematically varying the cost of punishment), and "learners_randparams.mat" and "learners_varyingcost.mat" store the results.
+"Learners" is where we simulate two (unbiased) RL agents playing each other in the steal/punish game. "simulateLearners.m" runs the simulations, either with randomly sampled payoffs or systematically varying the cost of punishment. "random_payoffs.mat" stores the former result; "varying_cost.mat" stores the latter result (with either fixed or randomly varying Moran parameters).
 
-"Embedded" is where we embed the RL agents in an evolutionary system and let them evolve hedonic biases for theft/punishment. "makeCache.m" runs the agent vs agent simulations, caches the payoff results, and stores the cache in "cache.mat". "simulateEmbedded.m" runs the simulations, and the results are stored in "embedded.mat".
+"Embedded" is where we embed the RL agents in an evolutionary system and let them evolve hedonic biases for theft/punishment. "makeCache.m" runs the agent vs agent simulations, caches the payoff results, and stores the cache. "simulateEmbedded.m" runs the simulations, and the results are stored in the "Results" folder. The naming conventions are identical to those in "Replicators". "random_moran" indicates that we randomly sampled the Moran parameters; "random_RL" indicates that we randomly sampled the RL parameters; and "perceived" indicates that we manipulated the perceived, not actual, cost of punishment.
 
 "Utilities" contains a bunch of background scripts used throughout the simulation code. See the scripts themselves for explanations.
 
