@@ -57,7 +57,7 @@ end
 %% Plot
 
 plot(paramVals, mean(punishBias, 2), paramVals, mean(stealBias, 2), '--', 'LineWidth', 4)
-set(gca, 'XTick', [0 10], 'XTickLabel', [.1 10], 'YTick', [0 1], 'YTickLabel', [0 1]);
+set(gca, 'XTick', [0 5 10], 'XTickLabel', [.1 5 10], 'YTick', [0 1], 'YTickLabel', [0 1]);
 xlabel('Cost of punishing');
 ylabel(sprintf('Prob. of evolving\nreward for action'));
 %set(gca, 'LineWidth', 4);
