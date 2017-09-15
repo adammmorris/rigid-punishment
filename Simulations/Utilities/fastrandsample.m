@@ -1,7 +1,7 @@
 %% fastrandsample
 % A faster version of MATLAB's "randsample" function.
 % Courtesy of Sam Gershman, June 2015. Original documentation included
-% below.
+% below. see https://github.com/sjgershm/mfit
 
 function y = fastrandsample(p,n) 
       

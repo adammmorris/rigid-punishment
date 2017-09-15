@@ -19,7 +19,7 @@ dodge <- position_dodge(width=0)
 
 ## ANALYSIS
 
-fixed_payoffs = F
+fixed_payoffs = T
 
 # Load data, focus on persistent opponents
 df <- read.csv(ifelse(fixed_payoffs, 'fixed_payoffs.csv', 'random_payoffs.csv')) %>%
@@ -64,10 +64,11 @@ df.collapsed
 ggplot(data = df.collapsed, aes(x = matchRound, y = choice.m, color = role, group = role, linetype = role)) +
   geom_line() +
   geom_errorbar(aes(ymax = choice.m + choice.se, ymin = choice.m - choice.se), width = .5, position = dodge) +
-  theme_adam() + xlab('Round') + ylab('% Stealing / punishing') +
+  theme_adam() + xlab('Round') + ylab('% Stealing or\npunishing') +
   scale_x_continuous(limits = c(-1,20), breaks = c(0,9,19), labels = c(1, 10, 20)) + scale_y_continuous(limits = c(0,100), breaks = c(0,50,100)) +
   theme(legend.title=element_blank(), legend.position = c(1,1), legend.justification = c(.9,.9)) +
   scale_colour_manual(values = c("Thief" = "Red", "Victim" = "Blue"))
+ggsave('test.eps', width = 4.5, height = 4.5, units = "in")
 
 ## FOR RANDOM_PAYOFFS VERSION
 if (!fixed_payoffs) {

@@ -1,5 +1,5 @@
 %% logsumexp
-% Courtesy of Sam Gershman
+% Courtesy of Sam Gershman (see https://github.com/sjgershm/mfit)
 
 function s = logsumexp(x,dim)
     

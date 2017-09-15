@@ -117,7 +117,7 @@ if ~useRandomParams
         'location', 'southeast');
     set(gca, 'XTick', [0 nParamVals/2 nParamVals + 1], 'XTickLabel', [.1 5 10], 'YTick', [0 1], 'YTickLabel', [0 1]);
     xlabel('Cost of punishing');
-    ylabel(sprintf('Probability of\nlearning outcome'));
+    ylabel(sprintf('Prob. of learning\noutcome'));
     set(gca, 'LineWidth', 4);
     set(gca, 'FontSize', 60);
 end
