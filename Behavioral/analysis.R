@@ -1,11 +1,12 @@
 ## PRELIMINARIES
-# You should set the working directory to the current folder
+# You should set the working directory to the current folder.
 
 require(lme4)
 require(lmerTest)
 require(dplyr)
 require(ggplot2)
 require(ez)
+require(MBESS)
 
 theme_adam = function() {
   theme_classic() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -19,14 +20,16 @@ dodge <- position_dodge(width=0)
 
 ## ANALYSIS
 
-fixed_payoffs = T
+fixed_payoffs = F
 
 # Load data, focus on persistent opponents
 df <- read.csv(ifelse(fixed_payoffs, 'fixed_payoffs.csv', 'random_payoffs.csv')) %>%
-  mutate(role = factor(role, c(1, 0), c('Victim', 'Thief')))
+  mutate(subject = factor(subject),
+         role = factor(role, c(1, 0), c('Victim', 'Thief')))
+df$orderCond = df$orderCond - 0.5 # effect coding
 
 if (fixed_payoffs) {
-  df = df %>% filter(!(subject == 'A21ZMR7O42OSMI' & role == 'Victim' & oppType == 2))
+  df = df %>% filter(!(subject == 28 & role == 'Victim' & oppType == 2)) # someone who glitched
 }
 
 df.persist <- df %>% filter(oppType == 2)
